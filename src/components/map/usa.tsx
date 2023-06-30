@@ -1,7 +1,8 @@
-import USAMap from "react-usa-map";
+import USAMap, { type Event } from "react-usa-map";
 
 export default function USA() {
-  const onClick = (event: any) => {
+  // event is synthetic React event for SVG paths
+  const onClick = (event: Event) => {
     alert(event.target.dataset.name);
   };
 
