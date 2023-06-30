@@ -33,6 +33,8 @@ export default {
   plugins: [
     plugin(function ({ addComponents }) {
       addComponents({
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         ".grain-overlay": {
           position: "relative",
           "&::before": {
