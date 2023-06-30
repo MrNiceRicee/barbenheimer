@@ -19,7 +19,7 @@ export default function Home() {
             Vote <span className="text-[hsl(329,99%,64%)]">Barben</span>
             <span className="text-[hsl(36,100%,50%)]">heimer</span>
           </h1>
-          <h1 className="w-full break-words text-5xl font-extrabold tracking-tight text-white sm:text-[5rem] lg:w-96">
+          <h1 className="w-full break-words text-5xl font-extrabold tracking-tight text-white lg:w-96">
             IP: {hello.data?.ip}
           </h1>
         </div>
