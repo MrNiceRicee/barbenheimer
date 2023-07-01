@@ -1,10 +1,9 @@
 import Head from "next/head";
 import USA from "~/components/map/usa";
-// import Link from "next/link";
 import { api } from "~/utils/api";
 
 export default function Home() {
-  const hello = api.ip.getIP.useQuery();
+  const ipQuery = api.ip.getIP.useQuery();
 
   return (
     <>
@@ -20,7 +19,7 @@ export default function Home() {
             <span className="text-[hsl(36,100%,50%)]">heimer</span>
           </h1>
           <h1 className="w-full break-words text-5xl font-extrabold tracking-tight text-white lg:w-96">
-            IP: {hello.data?.ip}
+            IP: {ipQuery.data?.ip}
           </h1>
         </div>
         <USA />
