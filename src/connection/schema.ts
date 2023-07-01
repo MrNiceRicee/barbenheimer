@@ -1,5 +1,11 @@
 import { type InferModel } from "drizzle-orm";
-import { mysqlTable, text, serial } from "drizzle-orm/mysql-core";
+import {
+  mysqlTable,
+  text,
+  serial,
+  uniqueIndex,
+  varchar,
+} from "drizzle-orm/mysql-core";
 
 const USA_STATES_FULL = [
   "Alabama",
@@ -63,12 +69,23 @@ const USA_STATES_FULL = [
   "Wyoming",
 ] as const;
 
-export const votes = mysqlTable("votes", {
-  id: serial("id").primaryKey(),
-  ip: text("ip"),
-  state: text("state", {
-    enum: USA_STATES_FULL,
-  }),
-});
+export const votes = mysqlTable(
+  "votes",
+  {
+    id: serial("id").primaryKey(),
+    ip: varchar("ip", {
+      length: 60,
+    }),
+    state: varchar("state", {
+      enum: USA_STATES_FULL,
+      length: 60,
+    }),
+  },
+  (votesTable) => {
+    return {
+      ipIndex: uniqueIndex("ip_index").on(votesTable.ip),
+    };
+  }
+);
 
 export type Votes = InferModel<typeof votes>;
