@@ -70,7 +70,7 @@ const USA_STATES_FULL = [
 ] as const;
 
 export const votes = mysqlTable(
-  "votes",
+  "barbenheimer_votes",
   {
     id: serial("id").primaryKey(),
     ip: varchar("ip", {
