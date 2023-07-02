@@ -4,9 +4,20 @@ import BaseLayout from "~/components/layouts/BaseLayout";
 import Link from "next/link";
 import { api } from "~/utils/api";
 
-export default function Home() {
-  const ipQuery = api.ip.getIP.useQuery();
+function VotesList() {
+  const totalVotes = api.states.totalVotes.useQuery();
+  return (
+    <ul>
+      {totalVotes.data?.map((state, index) => (
+        <li key={`${index}-state`}>
+          {state.state}: {state.count}
+        </li>
+      ))}
+    </ul>
+  );
+}
 
+export default function Home() {
   return (
     <>
       <Head>
@@ -27,7 +38,14 @@ export default function Home() {
             Go <span className="text-sky-600">here</span> to vote!
           </Link>
         </div>
-        <USA />
+        <div className="grid grid-cols-3">
+          <div className="col-span-2">
+            <USA />
+          </div>
+          <div className="col-span-1">
+            <VotesList />
+          </div>
+        </div>
       </BaseLayout>
     </>
   );

@@ -1,13 +1,12 @@
 import { type InferModel } from "drizzle-orm";
 import {
   mysqlTable,
-  text,
   serial,
   uniqueIndex,
   varchar,
 } from "drizzle-orm/mysql-core";
 
-const USA_STATES_FULL = [
+export const USA_STATES_FULL = [
   "Alabama",
   "Alaska",
   "American Samoa",
