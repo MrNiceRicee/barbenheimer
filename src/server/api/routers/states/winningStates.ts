@@ -3,7 +3,7 @@ import { db } from "~/connection/db";
 import { publicProcedure } from "../../trpc";
 import { votes } from "~/connection/schema";
 
-export const winnerVotes = publicProcedure.query(async () => {
+export const winningStates = publicProcedure.query(async () => {
   const start = performance.now();
   const voteCounts = db
     .select({
