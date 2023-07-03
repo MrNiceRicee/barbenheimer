@@ -2,21 +2,40 @@ import Head from "next/head";
 import USA from "~/components/map/usa";
 import { BaseLayout } from "~/components/layouts/BaseLayout";
 import { api } from "~/utils/api";
+import { cn } from "~/lib/utils";
+import { type RouterOutputs } from "~/utils/api";
+
+type WinningStatesOutput = RouterOutputs["states"]["winningStates"];
+
+function StateInfoBox({
+  candidate,
+  state,
+  count,
+}: WinningStatesOutput[number]) {
+  return (
+    <li
+      className={cn(
+        "rounded-md border px-4 py-2 shadow-md shadow-popover-foreground",
+        candidate === "Barbie" ? "bg-barbie" : "bg-oppenheimer"
+      )}
+    >
+      <h3 className="text-xl font-bold">{state}</h3>
+      <p className="text-lg font-thin">
+        {count} vote{count === 1 ? "" : "s"}
+      </p>
+    </li>
+  );
+}
 
 function VotesList() {
-  const totalVotes = api.states.totalVotes.useQuery(undefined, {
+  const winningStates = api.states.winningStates.useQuery(undefined, {
     retry: false,
   });
   return (
     <ul className="space-y-2">
-      {totalVotes.data?.map((state, index) => (
-        <li key={`${index}-state`} className="rounded-md border px-4 py-2">
-          <h3 className="text-xl font-bold">{state.state}</h3>
-          <p className="text-lg font-thin">
-            {state.count} vote{state.count === 1 ? "" : "s"}
-          </p>
-        </li>
-      ))}
+      {winningStates.data?.map((state, index) => {
+        return <StateInfoBox key={`${state.state}-${index}`} {...state} />;
+      })}
     </ul>
   );
 }
@@ -26,12 +45,12 @@ function Header() {
     <header className="container mb-10 flex flex-col">
       <div className="flex justify-between">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-[4rem]">
+          <h1 className="text-3xl font-extrabold tracking-tight text-oppenheimer sm:text-[4rem]">
             Oppenheimer
           </h1>
         </div>
         <div className="flex items-center space-x-4">
-          <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-[4rem]">
+          <h1 className="text-3xl font-extrabold tracking-tight text-barbie sm:text-[4rem]">
             Barbie
           </h1>
         </div>

@@ -52,6 +52,8 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        barbie: "hsl(329,99%,64%)",
+        oppenheimer: "hsl(36,100%,50%)",
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -74,15 +74,15 @@ export const votes = mysqlTable(
     id: serial("id").primaryKey(),
     ip: varchar("ip", {
       length: 60,
-    }),
+    }).notNull(),
     state: varchar("state", {
       enum: USA_STATES_FULL,
       length: 60,
-    }),
+    }).notNull(),
     candidate: varchar("candidate", {
       enum: ["Barbie", "Oppenheimer"],
       length: 60,
-    }),
+    }).notNull(),
   },
   (votesTable) => {
     return {
