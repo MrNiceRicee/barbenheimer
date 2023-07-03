@@ -10,4 +10,7 @@ const connection = connect({
   url: env.DATABASE_URL,
 });
 
-export const db = drizzle(connection);
+export const db = drizzle(
+  connection
+  ,{ logger: true }
+);

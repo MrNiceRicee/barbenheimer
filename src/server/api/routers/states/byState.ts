@@ -15,6 +15,7 @@ export const byState = publicProcedure
       .select({
         // cast to number
         count: sql<number>`COUNT(*)`,
+        candidate: votes.candidate,
       })
       .from(votes)
       .where(eq(votes.state, input.state))

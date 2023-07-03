@@ -79,6 +79,10 @@ export const votes = mysqlTable(
       enum: USA_STATES_FULL,
       length: 60,
     }),
+    candidate: varchar("candidate", {
+      enum: ["barbie", "oppenheimer"],
+      length: 60,
+    }),
   },
   (votesTable) => {
     return {
