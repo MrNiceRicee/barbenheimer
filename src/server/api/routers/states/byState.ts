@@ -11,17 +11,18 @@ export const byState = publicProcedure
     })
   )
   .query(async ({ input }) => {
-    const stateVotes = await db
+    const [stateVotes] = await db
       .select({
         // cast to number
         count: sql<number>`COUNT(*)`,
       })
       .from(votes)
-      .where(eq(votes.state, input.state));
+      .where(eq(votes.state, input.state))
+      .limit(1);
 
-    if (!stateVotes[0]) {
+    if (!stateVotes) {
       return 0;
     }
 
-    return stateVotes[0].count;
+    return stateVotes.count;
   });
