@@ -165,7 +165,7 @@ export default function Home() {
     <>
       <Head>
         <title>Barbenheimer</title>
-        <meta name="description" content="Barbenheimer voting!" />
+        <meta name="description" content="Vote between the movies Barbie and Oppenheimer. Both are releasing on the same day" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <BaseLayout className="py-5">

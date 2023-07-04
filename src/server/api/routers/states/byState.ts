@@ -13,7 +13,6 @@ export const byState = publicProcedure
   .query(async ({ input }) => {
     const [stateVotes] = await db
       .select({
-        // cast to number
         count: sql<number>`COUNT(*)`,
         candidate: votes.candidate,
         message: votes.message,

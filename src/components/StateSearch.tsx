@@ -76,11 +76,10 @@ export function StateSearch() {
             className="text-zinc-700"
           />
           <CommandEmpty>No state found.</CommandEmpty>
-          <CommandGroup>
+          <CommandGroup className="max-h-48">
             {searchParams.state && (
               <CommandItem
                 onSelect={() => {
-                  // setValue({ value: "", stateName: "" });
                   setSearchParams({ state: "" });
                   setOpen(false);
                 }}
@@ -92,13 +91,7 @@ export function StateSearch() {
             {states.map((state) => (
               <CommandItem
                 key={state.value}
-                // value={state.value}
                 onSelect={(currentValue) => {
-                  // setValue(currentValue === value ? "" : currentValue);
-                  // setValue({
-                  //   value: currentValue === value ? "" : currentValue,
-                  //   stateName: state.label,
-                  // });
                   setSearchParams({
                     state:
                       currentValue === searchParams.state ? "" : currentValue,

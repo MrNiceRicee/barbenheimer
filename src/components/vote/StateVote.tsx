@@ -23,6 +23,7 @@ import { api, isTRPCClientError } from "~/utils/api";
 import { useState } from "react";
 import { useToast } from "~/components/ui/use-toast";
 import { Textarea } from "~/components/ui/textarea";
+import { Loader } from "lucide-react";
 
 const stateVoteSchema = z.object({
   state: z.enum(stateList),
@@ -37,12 +38,15 @@ export function StateVote() {
   const [loading, setLoading] = useState(vote.isLoading);
   const form = useForm<z.infer<typeof stateVoteSchema>>({
     resolver: zodResolver(stateVoteSchema),
-    // defaultValues: {
-    // },
   });
 
   const onSubmit = async (values: z.infer<typeof stateVoteSchema>) => {
-    console.log(values);
+    if (loading) {
+      return toast({
+        title: "Please wait",
+        description: "The vote is still being processed",
+      });
+    }
     setLoading(true);
     try {
       await Promise.all([
@@ -54,7 +58,6 @@ export function StateVote() {
         new Promise((resolve) => setTimeout(resolve, 1000)),
       ]);
       void apiContext.states.invalidate();
-      form.reset();
     } catch (error) {
       console.error(error);
       if (isTRPCClientError(error)) {
@@ -154,7 +157,14 @@ export function StateVote() {
             )}
           />
           <Button type="submit" className="w-full border">
-            {loading ? "Loading..." : "Vote"}
+            {loading ? (
+              <span className="flex animate-pulse items-center justify-center space-x-2">
+                <Loader className="h-6 w-6 animate-spin duration-1000" />
+                <span>sending...</span>
+              </span>
+            ) : (
+              <span className="font-bold tracking-widest">Vote</span>
+            )}
           </Button>
         </form>
       </Form>
