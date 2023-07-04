@@ -7,7 +7,6 @@ import {
 } from "~/server/api/routers/states/shared/colors";
 import { api } from "~/utils/api";
 import { electoralAtom } from "../shared/electoral";
-import { cn } from "~/lib/utils";
 import { useTheme } from "next-themes";
 // import { useRouter } from "next/router";
 
@@ -303,7 +302,7 @@ export default function USA() {
   return (
     <div className="relative flex h-full w-full items-center justify-center">
       <USAMap
-        // onClick={onClick}
+        onClick={onClick}
         customize={stateCustomConfig()}
         defaultFill={
           theme === "light"
