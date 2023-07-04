@@ -10,6 +10,8 @@ export const vote = publicProcedure
   .input(
     z.object({
       state: z.enum(USA_STATES_FULL),
+      candidate: z.enum(["Barbie", "Oppenheimer"]),
+      message: z.string().max(280).optional(),
     })
   )
   .mutation(async ({ input, ctx }) => {
@@ -41,6 +43,8 @@ export const vote = publicProcedure
       await db.insert(votes).values({
         ip: userIP,
         state: input.state,
+        candidate: input.candidate,
+        message: input.message,
       });
     } catch (err) {
       throw new TRPCError({

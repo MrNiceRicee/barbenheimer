@@ -13,6 +13,7 @@ export const winningStates = publicProcedure.query(async () => {
     .from(votes)
     .groupBy(votes.state, votes.candidate)
     .as("voteCounts");
+
   const maxVotesPerState = db
     .select({
       state: voteCounts.state,
@@ -36,6 +37,5 @@ export const winningStates = publicProcedure.query(async () => {
         eq(voteCounts.count, maxVotesPerState.maxVotes)
       )
     );
-
   return totalVotes;
 });
