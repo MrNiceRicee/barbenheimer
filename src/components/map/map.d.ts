@@ -16,7 +16,7 @@ declare module "react-usa-map" {
 
   export type MapProps = {
     // onClick?: (stateAbbrev: string) => void;
-    onClick: ?((event: Event) => void);
+    onClick?: ?((event: Event) => void);
     onClickEvent?: (event: MouseEvent<SVGPathElement>) => void;
     onMouseOver?: (stateAbbrev: string) => void;
     onMouseOverEvent?: (event: MouseEvent<SVGPathElement>) => void;

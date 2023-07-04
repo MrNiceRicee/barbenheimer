@@ -25,7 +25,7 @@ function StateInfoBox({ candidate, state, count, ...rest }: StateInfoBoxProps) {
   return (
     <li
       className={cn(
-        "flex items-center justify-between rounded-md border px-4 py-2 shadow-md shadow-popover-foreground sm:block",
+        "flex items-center justify-between rounded-md border px-4 py-2 shadow-md shadow-zinc-300 dark:shadow-popover-foreground sm:block",
         candidate === "Barbie" ? "bg-barbie" : "bg-oppenheimer"
       )}
     >

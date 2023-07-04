@@ -7,6 +7,8 @@ import {
 } from "~/server/api/routers/states/shared/colors";
 import { api } from "~/utils/api";
 import { electoralAtom } from "../shared/electoral";
+import { cn } from "~/lib/utils";
+import { useTheme } from "next-themes";
 // import { useRouter } from "next/router";
 
 // value is electoral votes
@@ -240,8 +242,19 @@ export const State_Map = {
   },
 } as const;
 
+function useThemeMode() {
+  const { theme, systemTheme } = useTheme();
+
+  if (!systemTheme) {
+    return theme;
+  }
+
+  return systemTheme;
+}
+
 export default function USA() {
   // const router = useRouter();
+  const theme = useThemeMode();
   const setElectoralVotes = useSetAtom(electoralAtom);
 
   const winningStates = api.states.winningStates.useQuery(undefined, {
@@ -251,6 +264,7 @@ export default function USA() {
   const onClick = (event: Event) => {
     // idk what to do here
     // void router.push(`/vote/${event.target.dataset.name}`);
+    console.log(event.target.dataset.name);
   };
 
   const stateCustomConfig = () => {
@@ -287,8 +301,16 @@ export default function USA() {
   }, [setElectoralVotes, winningStates.data]);
 
   return (
-    <div className="flex h-full w-full items-center justify-center">
-      <USAMap onClick={onClick} customize={stateCustomConfig()} />
+    <div className="relative flex h-full w-full items-center justify-center">
+      <USAMap
+        // onClick={onClick}
+        customize={stateCustomConfig()}
+        defaultFill={
+          theme === "light"
+            ? "hsla(0deg, 0%, 55%, 1)"
+            : "hsla(0deg, 0%, 33%, 1)"
+        }
+      />
     </div>
   );
 }

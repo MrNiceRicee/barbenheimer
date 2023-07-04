@@ -93,7 +93,6 @@ module.exports = {
             backgroundImage: "url('/images/grain.png')",
             backgroundSize: "100px 100px",
             pointerEvents: "none",
-            transform: "scale(1.5)",
           },
         },
       });

@@ -10,7 +10,7 @@ export function BaseLayout({
   return (
     <main
       className={cn(
-        "grain-overlay min-h-screen bg-gradient-to-b from-zinc-800 to-zinc-950 before:opacity-80 dark:text-zinc-100",
+        "grain-overlay min-h-screen bg-gradient-to-b from-white to-stone-50 before:opacity-80 dark:from-stone-800 dark:to-stone-950 dark:text-zinc-100",
         className
       )}
     >
