@@ -1,4 +1,4 @@
-import { useEffect} from "react";
+import { useEffect } from "react";
 import { useSetAtom } from "jotai";
 import USAMap, { type Event, type MapCustomizations } from "react-usa-map";
 import {
@@ -7,6 +7,7 @@ import {
 } from "~/server/api/routers/states/shared/colors";
 import { api } from "~/utils/api";
 import { electoralAtom } from "../shared/electoral";
+// import { useRouter } from "next/router";
 
 // value is electoral votes
 export const State_Map = {
@@ -240,6 +241,7 @@ export const State_Map = {
 } as const;
 
 export default function USA() {
+  // const router = useRouter();
   const setElectoralVotes = useSetAtom(electoralAtom);
 
   const winningStates = api.states.winningStates.useQuery(undefined, {
@@ -248,6 +250,7 @@ export default function USA() {
 
   const onClick = (event: Event) => {
     // idk what to do here
+    // void router.push(`/vote/${event.target.dataset.name}`);
   };
 
   const stateCustomConfig = () => {

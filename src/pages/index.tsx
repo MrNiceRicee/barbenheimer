@@ -158,6 +158,10 @@ function Header() {
   );
 }
 
+function StateVote() {
+  const vote = api.states.vote.useMutation();
+}
+
 export default function Home() {
   return (
     <>
