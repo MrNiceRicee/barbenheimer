@@ -32,6 +32,7 @@ const stateVoteSchema = z.object({
 
 export function StateVote() {
   const vote = api.states.vote.useMutation();
+  const apiContext = api.useContext();
   const { toast } = useToast();
   const [loading, setLoading] = useState(vote.isLoading);
   const form = useForm<z.infer<typeof stateVoteSchema>>({
@@ -52,6 +53,7 @@ export function StateVote() {
         }),
         new Promise((resolve) => setTimeout(resolve, 1000)),
       ]);
+      void apiContext.states.invalidate();
       form.reset();
     } catch (error) {
       console.error(error);
