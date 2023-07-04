@@ -38,8 +38,6 @@ export function StateVote() {
   const [loading, setLoading] = useState(vote.isLoading);
   const form = useForm<z.infer<typeof stateVoteSchema>>({
     resolver: zodResolver(stateVoteSchema),
-    // defaultValues: {
-    // },
   });
 
   const onSubmit = async (values: z.infer<typeof stateVoteSchema>) => {

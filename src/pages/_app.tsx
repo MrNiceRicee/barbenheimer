@@ -5,7 +5,6 @@ import { ThemeProvider } from "~/components/layouts/ThemeProvider";
 import { Toaster } from "~/components/ui/toaster";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
-  // return <Component {...pageProps} />;
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <Component {...pageProps} />

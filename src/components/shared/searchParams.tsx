@@ -1,4 +1,3 @@
-// import { useSearchParams as useNextSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useCallback, useMemo } from "react";
 import { type z } from "zod";
@@ -15,7 +14,6 @@ const parseValue = (value: unknown) => {
 };
 
 export function useSearchParams<T extends z.AnyZodObject>(schema: T) {
-  // const searchParams = useNextSearchParams();
   const router = useRouter();
 
   const setSearchParamsWithSchema = useCallback(
@@ -46,7 +44,6 @@ export function useSearchParams<T extends z.AnyZodObject>(schema: T) {
       // ignore the async, we don't care about the result
       void router.replace({
         pathname: router.pathname,
-        // query: newParams.toString(),
         search: newParams.toString(),
       });
 
