@@ -56,7 +56,7 @@ const stateList = [
 ] as const;
 
 const searchParamsSchema = z.object({
-  state: z.enum(stateList),
+  state: z.enum(stateList).or(z.string()).nullish(),
 });
 
 export function useStateParams() {

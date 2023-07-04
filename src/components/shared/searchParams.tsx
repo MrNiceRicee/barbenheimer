@@ -68,13 +68,15 @@ export function useSearchParams<T extends z.AnyZodObject>(schema: T) {
       return {
         ok: false,
         error: parsed.error,
+        searchParams: searchParamValues as z.infer<T>,
+        setSearchParams: setSearchParamsWithSchema,
       } as const;
     }
 
     return {
       ok: true,
       searchParams: parsed.data as z.infer<T>,
-      setSearchParamsWithSchema,
+      setSearchParams: setSearchParamsWithSchema,
     } as const;
   }, [router.query, schema, setSearchParamsWithSchema]);
 }

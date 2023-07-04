@@ -4,7 +4,6 @@ import { BaseLayout } from "~/components/layouts/BaseLayout";
 export default function VotePage() {
   const router = useRouter();
 
-  console.log(router.query.state);
   return (
     <BaseLayout>
       <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
