@@ -6,7 +6,9 @@ import {
 } from "~/server/api/routers/states/shared/colors";
 import { api } from "~/utils/api";
 import { electoralAtom } from "../shared/electoral";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { Button } from "../ui/Button";
 
 // value is electoral votes
 export const State_Map = {
@@ -18,10 +20,10 @@ export const State_Map = {
     id: "AK",
     value: 3,
   },
-  "American Samoa": {
-    id: "AS",
-    value: 3,
-  },
+  // "American Samoa": {
+  //   id: "AS",
+  //   value: 3,
+  // },
   Arizona: {
     id: "AZ",
     value: 11,
@@ -56,10 +58,10 @@ export const State_Map = {
     id: "GA",
     value: 16,
   },
-  Guam: {
-    id: "GU",
-    value: 3,
-  },
+  // Guam: {
+  //   id: "GU",
+  //   value: 3,
+  // },
   Hawaii: {
     id: "HI",
     value: 4,
@@ -96,10 +98,10 @@ export const State_Map = {
     id: "ME",
     value: 4,
   },
-  "Marshall Islands": {
-    id: "MH",
-    value: 3,
-  },
+  // "Marshall Islands": {
+  //   id: "MH",
+  //   value: 3,
+  // },
   Maryland: {
     id: "MD",
     value: 10,
@@ -160,10 +162,10 @@ export const State_Map = {
     id: "ND",
     value: 3,
   },
-  "Northern Mariana Islands": {
-    id: "MP",
-    value: 3,
-  },
+  // "Northern Mariana Islands": {
+  //   id: "MP",
+  //   value: 3,
+  // },
   Ohio: {
     id: "OH",
     value: 18,
@@ -176,18 +178,18 @@ export const State_Map = {
     id: "OR",
     value: 7,
   },
-  Palau: {
-    id: "PW",
-    value: 3,
-  },
+  // Palau: {
+  //   id: "PW",
+  //   value: 3,
+  // },
   Pennsylvania: {
     id: "PA",
     value: 20,
   },
-  "Puerto Rico": {
-    id: "PR",
-    value: 3,
-  },
+  // "Puerto Rico": {
+  //   id: "PR",
+  //   value: 3,
+  // },
   "Rhode Island": {
     id: "RI",
     value: 4,
@@ -241,13 +243,23 @@ export const State_Map = {
 
 export default function USA() {
   const setElectoralVotes = useSetAtom(electoralAtom);
+  const [model, setModel] = useState<{
+    open: boolean;
+    state: keyof typeof State_Map | null;
+  }>({
+    open: false,
+    state: null,
+  });
+
   const winningStates = api.states.winningStates.useQuery(undefined, {
     retry: false,
   });
 
   const onClick = (event: Event) => {
-    alert(event.target.dataset.name);
+    // idk what to do here
   };
+
+  console.log(model);
 
   const stateCustomConfig = () => {
     if (winningStates.data) {

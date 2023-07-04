@@ -8,14 +8,20 @@ import { type RouterOutputs } from "~/utils/api";
 import { useAtomValue } from "jotai";
 import { electoralAtom } from "~/components/shared/electoral";
 import { State_Map } from "~/components/map/usa";
+import { StateSearch } from "~/components/StateSearch";
+import { useState } from "react";
 
 type WinningStatesOutput = RouterOutputs["states"]["winningStates"];
+type TotalStatesOutput = RouterOutputs["states"]["totalVotes"];
 
-function StateInfoBox({
-  candidate,
-  state,
-  count,
-}: WinningStatesOutput[number]) {
+interface StateInfoBoxProps {
+  candidate: WinningStatesOutput[number]["candidate"] | null;
+  state: TotalStatesOutput[number]["state"];
+  count: TotalStatesOutput[number]["count"];
+}
+
+function StateInfoBox({ candidate, state, count, ...rest }: StateInfoBoxProps) {
+  console.log(rest);
   return (
     <li
       className={cn(
@@ -25,7 +31,10 @@ function StateInfoBox({
     >
       <h3 className="text-xl font-bold">
         {state}
-        <span className="mr-2 text-sm font-thin">
+        <span className="ml-1 mr-2 text-sm font-thin lg:hidden">
+          ({State_Map[state].id})
+        </span>
+        <span className="hidden text-sm font-thin lg:inline">
           ({State_Map[state].value})
         </span>
       </h3>
@@ -40,12 +49,35 @@ function VotesList() {
   const winningStates = api.states.winningStates.useQuery(undefined, {
     retry: false,
   });
+  const totalVotes = api.states.totalVotes.useQuery(undefined, {
+    retry: false,
+  });
+
+  const [value, setValue] = useState("");
+
+  const filteredStates = totalVotes.data?.filter((state) => {
+    return state.state.toLowerCase().includes(value.toLowerCase());
+  });
+
   return (
-    <ul className="space-y-2">
-      {winningStates.data?.map((state, index) => {
-        return <StateInfoBox key={`${state.state}-${index}`} {...state} />;
-      })}
-    </ul>
+    <>
+      <StateSearch value={value} setValue={setValue} />
+      <ul className="space-y-2">
+        {filteredStates?.map((state, index) => {
+          return (
+            <StateInfoBox
+              key={`${state.state}-${index}`}
+              candidate={
+                winningStates.data?.find((s) => s.state === state.state)
+                  ?.candidate ?? null
+              }
+              state={state.state}
+              count={state.count}
+            />
+          );
+        })}
+      </ul>
+    </>
   );
 }
 
@@ -91,7 +123,6 @@ function VoteLine() {
 }
 
 function Header() {
-  const electoralVotes = useAtomValue(electoralAtom);
   return (
     <header className="container mb-10 flex flex-col">
       <div className="grid grid-cols-12">
