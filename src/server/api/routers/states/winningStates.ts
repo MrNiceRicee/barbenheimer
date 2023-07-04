@@ -4,7 +4,6 @@ import { publicProcedure } from "../../trpc";
 import { votes } from "~/connection/schema";
 
 export const winningStates = publicProcedure.query(async () => {
-  const start = performance.now();
   const voteCounts = db
     .select({
       state: votes.state,
@@ -37,8 +36,6 @@ export const winningStates = publicProcedure.query(async () => {
         eq(voteCounts.count, maxVotesPerState.maxVotes)
       )
     );
-  const end = performance.now();
-  console.log(`totalVotes took ${end - start}ms`);
 
   return totalVotes;
 });
