@@ -10,6 +10,7 @@ import { electoralAtom } from "~/components/shared/electoral";
 import { State_Map } from "~/components/map/usa";
 import { StateSearch } from "~/components/StateSearch";
 import { useState } from "react";
+import { useStateParams } from "~/components/shared/useStateParams";
 
 type WinningStatesOutput = RouterOutputs["states"]["winningStates"];
 type TotalStatesOutput = RouterOutputs["states"]["totalVotes"];
@@ -21,7 +22,6 @@ interface StateInfoBoxProps {
 }
 
 function StateInfoBox({ candidate, state, count, ...rest }: StateInfoBoxProps) {
-  console.log(rest);
   return (
     <li
       className={cn(
@@ -53,15 +53,17 @@ function VotesList() {
     retry: false,
   });
 
-  const [value, setValue] = useState("");
+  const { searchParams } = useStateParams();
 
   const filteredStates = totalVotes.data?.filter((state) => {
-    return state.state.toLowerCase().includes(value.toLowerCase());
+    return state.state
+      .toLowerCase()
+      .includes(searchParams.state?.toLowerCase() ?? "");
   });
 
   return (
     <>
-      <StateSearch value={value} setValue={setValue} />
+      <StateSearch />
       <ul className="space-y-2">
         {filteredStates?.map((state, index) => {
           return (

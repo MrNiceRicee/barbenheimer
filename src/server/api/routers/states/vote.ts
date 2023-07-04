@@ -31,7 +31,6 @@ export const vote = publicProcedure
       .where(eq(votes.ip, userIP))
       .limit(1);
 
-    console.log("existingVote", existingVote);
     if (!!existingVote) {
       throw new TRPCError({
         code: "BAD_REQUEST",

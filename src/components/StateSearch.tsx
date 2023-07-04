@@ -15,6 +15,7 @@ import {
   PopoverTrigger,
 } from "~/components/ui/popover";
 import { cn } from "~/lib/utils";
+import { useStateParams } from "./shared/useStateParams";
 
 const StateList = () => {
   return Object.entries(State_Map).map(([key, value]) => {
@@ -25,14 +26,35 @@ const StateList = () => {
   });
 };
 
-export function StateSearch({
+function StateLabel({
   value,
-  setValue,
+  states,
 }: {
   value: string;
-  setValue: (value: string) => void;
+  states: ReturnType<typeof StateList>;
 }) {
+  console.log({ value });
+  if (!value) {
+    // return "search states...";
+    return <span>search states...</span>;
+  }
+
+  const state = states.find(
+    (state) => state.value.toLowerCase() === value.toLowerCase()
+  );
+
+  console.log({
+    state,
+  });
+
+  // return state?.label || value;
+  return <span>{state?.label || value}</span>;
+}
+
+export function StateSearch() {
+  const { searchParams, setSearchParams } = useStateParams();
   const [open, setOpen] = useState(false);
+
   const states = StateList();
 
   return (
@@ -44,13 +66,7 @@ export function StateSearch({
           aria-expanded={open}
           className="mb-2 w-[200px] justify-between text-zinc-700"
         >
-          <span>
-            {value
-              ? states.find(
-                  (state) => state.label.toLowerCase() === value.toLowerCase()
-                )?.label
-              : "search states..."}
-          </span>
+          <StateLabel value={searchParams.state || ""} states={states} />
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -62,10 +78,11 @@ export function StateSearch({
           />
           <CommandEmpty>No state found.</CommandEmpty>
           <CommandGroup>
-            {value && (
+            {searchParams.state && (
               <CommandItem
                 onSelect={() => {
-                  setValue("");
+                  // setValue({ value: "", stateName: "" });
+                  setSearchParams({ state: "" });
                   setOpen(false);
                 }}
               >
@@ -76,15 +93,27 @@ export function StateSearch({
             {states.map((state) => (
               <CommandItem
                 key={state.value}
+                // value={state.value}
                 onSelect={(currentValue) => {
-                  setValue(currentValue === value ? "" : currentValue);
+                  // setValue(currentValue === value ? "" : currentValue);
+                  // setValue({
+                  //   value: currentValue === value ? "" : currentValue,
+                  //   stateName: state.label,
+                  // });
+                  setSearchParams({
+                    state:
+                      currentValue === searchParams.state ? "" : currentValue,
+                  });
                   setOpen(false);
                 }}
               >
                 <Check
                   className={cn(
                     "mr-2 h-4 w-4",
-                    value === state.value ? "opacity-100" : "opacity-0"
+                    searchParams.state?.toLowerCase() ===
+                      state.label.toLowerCase()
+                      ? "opacity-100"
+                      : "opacity-0"
                   )}
                 />
                 {state.label}
