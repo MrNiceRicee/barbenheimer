@@ -1,3 +1,4 @@
+import { useEffect} from "react";
 import { useSetAtom } from "jotai";
 import USAMap, { type Event, type MapCustomizations } from "react-usa-map";
 import {
@@ -6,9 +7,6 @@ import {
 } from "~/server/api/routers/states/shared/colors";
 import { api } from "~/utils/api";
 import { electoralAtom } from "../shared/electoral";
-import { useEffect, useState } from "react";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { Button } from "../ui/Button";
 
 // value is electoral votes
 export const State_Map = {
@@ -243,13 +241,6 @@ export const State_Map = {
 
 export default function USA() {
   const setElectoralVotes = useSetAtom(electoralAtom);
-  const [model, setModel] = useState<{
-    open: boolean;
-    state: keyof typeof State_Map | null;
-  }>({
-    open: false,
-    state: null,
-  });
 
   const winningStates = api.states.winningStates.useQuery(undefined, {
     retry: false,
@@ -258,8 +249,6 @@ export default function USA() {
   const onClick = (event: Event) => {
     // idk what to do here
   };
-
-  console.log(model);
 
   const stateCustomConfig = () => {
     if (winningStates.data) {
