@@ -8,7 +8,6 @@ import {
 import { api } from "~/utils/api";
 import { electoralAtom } from "../shared/electoral";
 import { useTheme } from "next-themes";
-// import { useRouter } from "next/router";
 
 // value is electoral votes
 export const State_Map = {
@@ -252,7 +251,6 @@ function useThemeMode() {
 }
 
 export default function USA() {
-  // const router = useRouter();
   const theme = useThemeMode();
   const setElectoralVotes = useSetAtom(electoralAtom);
 
@@ -261,8 +259,6 @@ export default function USA() {
   });
 
   const onClick = (event: Event) => {
-    // idk what to do here
-    // void router.push(`/vote/${event.target.dataset.name}`);
     console.log(event.target.dataset.name);
   };
 
