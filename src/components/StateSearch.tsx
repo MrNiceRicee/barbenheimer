@@ -76,7 +76,7 @@ export function StateSearch() {
             className="text-zinc-700"
           />
           <CommandEmpty>No state found.</CommandEmpty>
-          <CommandGroup>
+          <CommandGroup className="max-h-48">
             {searchParams.state && (
               <CommandItem
                 onSelect={() => {
