@@ -104,7 +104,6 @@ function VoteLine() {
               width: `${oppenheimerPercentage}%`,
             }}
           />
-          <p className="text-left">{electoralVotes.Oppenheimer}</p>
         </div>
         <div className="col-span-6 flex h-10 flex-col items-end">
           <div
@@ -113,7 +112,6 @@ function VoteLine() {
               width: `${barbiePercentage}%`,
             }}
           />
-          <p className="text-right">{electoralVotes.Barbie}</p>
         </div>
         <div className="absolute left-1/2 top-1/2 col-span-12 h-4 w-[1px] -translate-x-1/2 -translate-y-1/2 bg-gray-400" />
         <p className="absolute left-1/2 -translate-x-1/2 translate-y-full text-center">
@@ -125,6 +123,8 @@ function VoteLine() {
 }
 
 function Header() {
+  const votes = useAtomValue(electoralAtom);
+
   return (
     <header className="container mb-10 flex flex-col">
       <div className="grid grid-cols-12">
@@ -137,14 +137,24 @@ function Header() {
           />
         </div>
         <div className="col-span-6 ml-2 flex justify-start space-y-4 break-words sm:col-span-4 sm:ml-0">
-          <h1 className="text-2xl font-extrabold tracking-tight text-oppenheimer sm:text-[3rem]">
-            Oppenheimer
-          </h1>
+          <div className="space-y-8">
+            <h1 className="text-2xl font-extrabold tracking-tight text-oppenheimer sm:text-[3rem]">
+              Oppenheimer
+            </h1>
+            <p className="text-center text-3xl font-bold text-oppenheimer sm:text-[3rem]">
+              {votes.Oppenheimer}
+            </p>
+          </div>
         </div>
         <div className="col-span-6 ml-2 justify-end space-y-4 break-words sm:col-span-4 sm:ml-0 sm:flex">
-          <h1 className="text-3xl font-extrabold tracking-tight text-barbie sm:text-[4rem]">
-            Barbie
-          </h1>
+          <div className="space-y-8">
+            <h1 className="text-3xl font-extrabold tracking-tight text-barbie sm:text-[4rem]">
+              Barbie
+            </h1>
+            <p className="text-center text-3xl font-bold text-barbie sm:text-[3rem]">
+              {votes.Barbie}
+            </p>
+          </div>
         </div>
         <div className="col-span-6 row-start-2 flex justify-end sm:col-span-2 sm:row-start-auto">
           <Image
@@ -165,7 +175,10 @@ export default function Home() {
     <>
       <Head>
         <title>Barbenheimer</title>
-        <meta name="description" content="Vote between the movies Barbie and Oppenheimer. Both are releasing on the same day" />
+        <meta
+          name="description"
+          content="Vote between the movies Barbie and Oppenheimer. Both are releasing on the same day"
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <BaseLayout className="py-5">
@@ -178,7 +191,7 @@ export default function Home() {
             <VotesList />
           </div>
         </section>
-          <StateVote />
+        <StateVote />
       </BaseLayout>
     </>
   );
