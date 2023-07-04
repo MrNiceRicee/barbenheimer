@@ -46,7 +46,8 @@ export function useSearchParams<T extends z.AnyZodObject>(schema: T) {
       // ignore the async, we don't care about the result
       void router.replace({
         pathname: router.pathname,
-        query: newParams.toString(),
+        // query: newParams.toString(),
+        search: newParams.toString(),
       });
 
       return {

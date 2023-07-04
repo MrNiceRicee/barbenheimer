@@ -9,8 +9,8 @@ import { useAtomValue } from "jotai";
 import { electoralAtom } from "~/components/shared/electoral";
 import { State_Map } from "~/components/map/usa";
 import { StateSearch } from "~/components/StateSearch";
-import { useState } from "react";
 import { useStateParams } from "~/components/shared/useStateParams";
+import { StateVote } from "~/components/vote/StateVote";
 
 type WinningStatesOutput = RouterOutputs["states"]["winningStates"];
 type TotalStatesOutput = RouterOutputs["states"]["totalVotes"];
@@ -21,7 +21,7 @@ interface StateInfoBoxProps {
   count: TotalStatesOutput[number]["count"];
 }
 
-function StateInfoBox({ candidate, state, count, ...rest }: StateInfoBoxProps) {
+function StateInfoBox({ candidate, state, count }: StateInfoBoxProps) {
   return (
     <li
       className={cn(
@@ -160,10 +160,6 @@ function Header() {
   );
 }
 
-function StateVote() {
-  const vote = api.states.vote.useMutation();
-}
-
 export default function Home() {
   return (
     <>
@@ -182,6 +178,7 @@ export default function Home() {
             <VotesList />
           </div>
         </section>
+          <StateVote />
       </BaseLayout>
     </>
   );

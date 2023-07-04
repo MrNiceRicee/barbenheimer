@@ -1,8 +1,7 @@
 import { z } from "zod";
-import { State_Map } from "../map/usa";
 import { useSearchParams } from "./searchParams";
 
-const stateList = [
+export const stateList = [
   "Alabama",
   "Alaska",
   "Arizona",
@@ -42,7 +41,7 @@ const stateList = [
   "Oregon",
   "Pennsylvania",
   "Rhode Island",
-  "South  Carolina",
+  "South Carolina",
   "South Dakota",
   "Tennessee",
   "Texas",

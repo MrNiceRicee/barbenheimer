@@ -1,6 +1,7 @@
-import { ChevronsUpDown, Check, Eraser } from "lucide-react";
+import { Check, Eraser, ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { State_Map } from "./map/usa";
+import { stateList } from "./shared/useStateParams";
 import { Button } from "~/components/ui/Button";
 import {
   Command,
@@ -18,10 +19,10 @@ import { cn } from "~/lib/utils";
 import { useStateParams } from "./shared/useStateParams";
 
 const StateList = () => {
-  return Object.entries(State_Map).map(([key, value]) => {
+  return stateList.map((state) => {
     return {
-      value: value.id.toLowerCase(),
-      label: key,
+      value: State_Map[state].id.toLowerCase(),
+      label: state,
     };
   });
 };
@@ -33,9 +34,7 @@ function StateLabel({
   value: string;
   states: ReturnType<typeof StateList>;
 }) {
-  console.log({ value });
   if (!value) {
-    // return "search states...";
     return <span>search states...</span>;
   }
 
@@ -43,11 +42,6 @@ function StateLabel({
     (state) => state.value.toLowerCase() === value.toLowerCase()
   );
 
-  console.log({
-    state,
-  });
-
-  // return state?.label || value;
   return <span>{state?.label || value}</span>;
 }
 
@@ -64,10 +58,15 @@ export function StateSearch() {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="mb-2 w-[200px] justify-between text-zinc-700"
+          className="group mb-2 w-[200px] justify-between text-zinc-700 transition-all duration-300"
         >
           <StateLabel value={searchParams.state || ""} states={states} />
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          <ChevronDown
+            className={cn(
+              "ml-2 inline-block h-4 w-4 shrink-0 opacity-50 transition-transform duration-300 ease-out group-focus:translate-y-[1.5px]",
+              open ? "rotate-180 duration-100" : ""
+            )}
+          />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
