@@ -1,27 +1,26 @@
 import { type InferModel } from "drizzle-orm";
 import {
   mysqlTable,
-  text,
   serial,
   uniqueIndex,
   varchar,
 } from "drizzle-orm/mysql-core";
 
-const USA_STATES_FULL = [
+export const USA_STATES_FULL = [
   "Alabama",
   "Alaska",
-  "American Samoa",
+  // "American Samoa",
   "Arizona",
   "Arkansas",
   "California",
   "Colorado",
   "Connecticut",
   "Delaware",
-  "District of Columbia",
-  "Federated States of Micronesia",
+  // "District of Columbia",
+  // "Federated States of Micronesia",
   "Florida",
   "Georgia",
-  "Guam",
+  // "Guam",
   "Hawaii",
   "Idaho",
   "Illinois",
@@ -31,7 +30,7 @@ const USA_STATES_FULL = [
   "Kentucky",
   "Louisiana",
   "Maine",
-  "Marshall Islands",
+  // "Marshall Islands",
   "Maryland",
   "Massachusetts",
   "Michigan",
@@ -47,13 +46,13 @@ const USA_STATES_FULL = [
   "New York",
   "North Carolina",
   "North Dakota",
-  "Northern Mariana Islands",
+  // "Northern Mariana Islands",
   "Ohio",
   "Oklahoma",
   "Oregon",
-  "Palau",
+  // "Palau",
   "Pennsylvania",
-  "Puerto Rico",
+  // "Puerto Rico",
   "Rhode Island",
   "South Carolina",
   "South Dakota",
@@ -61,7 +60,7 @@ const USA_STATES_FULL = [
   "Texas",
   "Utah",
   "Vermont",
-  "Virgin Island",
+  // "Virgin Island",
   "Virginia",
   "Washington",
   "West Virginia",
@@ -70,15 +69,22 @@ const USA_STATES_FULL = [
 ] as const;
 
 export const votes = mysqlTable(
-  "votes",
+  "barbenheimer_votes",
   {
     id: serial("id").primaryKey(),
     ip: varchar("ip", {
       length: 60,
-    }),
+    }).notNull(),
     state: varchar("state", {
       enum: USA_STATES_FULL,
       length: 60,
+    }).notNull(),
+    candidate: varchar("candidate", {
+      enum: ["Barbie", "Oppenheimer"],
+      length: 60,
+    }).notNull(),
+    message: varchar("message", {
+      length: 280,
     }),
   },
   (votesTable) => {
