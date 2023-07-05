@@ -29,14 +29,9 @@ function StateInfoBox({ candidate, state, count }: StateInfoBoxProps) {
         candidate === "Barbie" ? "bg-barbie" : "bg-oppenheimer"
       )}
     >
-      <h3 className="text-xl font-bold">
-        {state}
-        <span className="ml-1 mr-2 text-sm font-thin lg:hidden">
-          ({State_Map[state].id})
-        </span>
-        <span className="hidden text-sm font-thin lg:inline">
-          ({State_Map[state].value})
-        </span>
+      <h3 className="space-x-2 text-xl font-bold">
+        <span>{state}</span>
+        <span className="text-sm font-light">({State_Map[state].value})</span>
       </h3>
       <p className="text-lg font-thin">
         {count} vote{count === 1 ? "" : "s"}
