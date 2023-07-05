@@ -62,7 +62,7 @@ function VotesList() {
 
   return (
     <>
-      <p>total votes {allVotes?.toLocaleString()}</p>
+      <p className="font-light text-sm mb-2">total votes {allVotes?.toLocaleString()}</p>
       <StateSearch />
       <ul className="space-y-2">
         {filteredStates?.map((state, index) => {
