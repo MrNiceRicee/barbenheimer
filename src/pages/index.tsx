@@ -48,6 +48,10 @@ function VotesList() {
     retry: false,
   });
 
+  const allVotes = totalVotes.data?.reduce((acc, state) => {
+    return acc + Number(state.count);
+  }, 0);
+
   const { searchParams } = useStateParams();
 
   const filteredStates = totalVotes.data?.filter((state) => {
@@ -58,6 +62,7 @@ function VotesList() {
 
   return (
     <>
+      <p>total votes {allVotes?.toLocaleString()}</p>
       <StateSearch />
       <ul className="space-y-2">
         {filteredStates?.map((state, index) => {
