@@ -5,7 +5,7 @@ export const config = {
   runtime: "edge",
 };
 
-const image = fetch(new URL("./og.png", import.meta.url)).then((res) =>
+const image = fetch(new URL("./og.jpg", import.meta.url)).then((res) =>
   res.arrayBuffer()
 );
 
