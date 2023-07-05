@@ -20,7 +20,7 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { api, isTRPCClientError } from "~/utils/api";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useToast } from "~/components/ui/use-toast";
 import { Textarea } from "~/components/ui/textarea";
 import { Loader } from "lucide-react";
@@ -36,6 +36,7 @@ export function StateVote() {
   const apiContext = api.useContext();
   const { toast } = useToast();
   const [loading, setLoading] = useState(vote.isLoading);
+  const [success, setSuccess] = useState(false);
   const form = useForm<z.infer<typeof stateVoteSchema>>({
     resolver: zodResolver(stateVoteSchema),
     defaultValues: {
@@ -44,6 +45,20 @@ export function StateVote() {
       message: "",
     },
   });
+
+  useEffect(() => {
+    if (vote.isSuccess) {
+      setSuccess(true);
+      // clear success after 5 seconds
+      const timeout = setTimeout(() => {
+        setSuccess(false);
+      }, 1);
+
+      return () => {
+        clearTimeout(timeout);
+      };
+    }
+  }, [vote.isSuccess]);
 
   const onSubmit = async (values: z.infer<typeof stateVoteSchema>) => {
     if (loading) {
@@ -77,6 +92,10 @@ export function StateVote() {
       ]);
       void apiContext.states.invalidate();
       form.reset();
+      toast({
+        title: "Success",
+        description: "Your vote has been submitted",
+      });
     } catch (error) {
       console.error(error);
       if (isTRPCClientError(error)) {
@@ -104,7 +123,7 @@ export function StateVote() {
                 <Select
                   onValueChange={field.onChange as (value: string) => void}
                   defaultValue={field.value}
-                  key={`${field.value ?? "default"}-state`}
+                  key={`${success ? "ok" : ""}-state`}
                 >
                   <FormControl>
                     <SelectTrigger>
@@ -137,7 +156,8 @@ export function StateVote() {
                 <Select
                   onValueChange={field.onChange as (value: string) => void}
                   defaultValue={field.value}
-                  key={`${field.value ?? "default"}-candidate`}
+                  // key={`${field.value ?? "default"}-candidate`}
+                  key={`${success ? "ok" : ""}-candidate`}
                 >
                   <FormControl>
                     <SelectTrigger>
