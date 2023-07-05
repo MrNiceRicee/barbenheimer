@@ -72,7 +72,7 @@ function VotesList() {
         total votes {allVotes?.toLocaleString()}
       </p>
       <StateSearch />
-      <ul className="space-y-2">
+      <ul className="max-h-[30rem] space-y-2 overflow-y-scroll">
         {filteredStates?.map((state, index) => {
           return (
             <StateInfoBox
