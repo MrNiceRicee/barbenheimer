@@ -72,7 +72,13 @@ function VotesList() {
         total votes {allVotes?.toLocaleString()}
       </p>
       <StateSearch />
-      <ul className="max-h-[30rem] space-y-2 overflow-y-scroll">
+      <ul
+        className="max-h-[30rem] space-y-2 overflow-y-scroll py-2"
+        style={{
+          WebkitMaskImage:
+            "linear-gradient(to bottom, transparent, black 2%, black 98%, transparent)",
+        }}
+      >
         {filteredStates?.map((state, index) => {
           return (
             <StateInfoBox
