@@ -15,25 +15,36 @@ type WinningStatesOutput = RouterOutputs["states"]["winningStates"];
 type TotalStatesOutput = RouterOutputs["states"]["totalVotes"];
 
 interface StateInfoBoxProps {
-  candidate: WinningStatesOutput[number]["candidate"] | null;
+  candidate: WinningStatesOutput[number]["winner"];
   state: TotalStatesOutput[number]["state"];
   count: TotalStatesOutput[number]["count"];
   index: number;
 }
 
 function StateInfoBox({ candidate, state, count, index }: StateInfoBoxProps) {
+  const stateColor = () => {
+    if (candidate === "Barbie") {
+      return "bg-barbie";
+    }
+    if (candidate === "Oppenheimer") {
+      return "bg-oppenheimer";
+    }
+
+    // just in case
+    return "bg-tie";
+  };
   return (
     <li
       className={cn(
-        "flex items-center justify-between rounded-md border px-4 py-2 shadow-md shadow-zinc-300 animate-in fade-in duration-1000 fill-mode-forwards dark:shadow-zinc-950 sm:block",
-        candidate === "Barbie" ? "bg-barbie" : "bg-oppenheimer"
+        "flex items-center justify-between rounded-md border shadow-md shadow-zinc-300 animate-in fade-in duration-1000 fill-mode-forwards dark:shadow-zinc-950 sm:block",
+        stateColor()
       )}
       style={{
         // animationDelay: `${index * 50}ms`,
         animationDuration: `${index * 100 + 100}ms`,
       }}
     >
-      <Link href={`/state/${state}`}>
+      <Link href={`/state/${state}`} className="inline-block px-4 py-2">
         <h3 className="space-x-2 text-xl font-bold">
           <span>{state}</span>
           <span className="text-sm font-light">({State_Map[state].value})</span>
@@ -60,10 +71,13 @@ function VotesList() {
 
   const { searchParams } = useStateParams();
 
-  const filteredStates = totalVotes.data?.filter((state) => {
-    return state.state
-      .toLowerCase()
-      .includes(searchParams.state?.toLowerCase() ?? "");
+  const filteredStates = winningStates.data?.filter((state) => {
+    if (searchParams.state && typeof searchParams.state === "string") {
+      return state.state
+        .toLowerCase()
+        .includes(searchParams.state.toLowerCase());
+    }
+    return true;
   });
 
   return (
@@ -83,12 +97,9 @@ function VotesList() {
           return (
             <StateInfoBox
               key={`${state.state}-${index}`}
-              candidate={
-                winningStates.data?.find((s) => s.state === state.state)
-                  ?.candidate ?? null
-              }
+              candidate={state.winner}
               state={state.state}
-              count={state.count}
+              count={state.totalVotes}
               index={index}
             />
           );

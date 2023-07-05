@@ -2,6 +2,7 @@ import USAMap, { type Event, type MapCustomizations } from "react-usa-map";
 import {
   barbieColors,
   oppenheimerColors,
+  tieColors,
 } from "~/server/api/routers/states/shared/colors";
 import { api } from "~/utils/api";
 import { useTheme } from "next-themes";
@@ -270,12 +271,21 @@ export default function USA() {
   const stateCustomConfig = () => {
     if (winningStates.data) {
       const stateCustoms = winningStates.data.reduce((acc, state) => {
-        if (state.state) {
+        if (state.winner === "Barbie") {
           acc[State_Map[state.state].id] = {
-            fill:
-              state.candidate === "Barbie" ? barbieColors : oppenheimerColors,
+            fill: barbieColors,
           };
+          return acc;
         }
+        if (state.winner === "Oppenheimer") {
+          acc[State_Map[state.state].id] = {
+            fill: oppenheimerColors,
+          };
+          return acc;
+        }
+        acc[State_Map[state.state].id] = {
+          fill: tieColors,
+        };
         return acc;
       }, {} as MapCustomizations);
       return stateCustoms;
