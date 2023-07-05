@@ -18,15 +18,20 @@ interface StateInfoBoxProps {
   candidate: WinningStatesOutput[number]["candidate"] | null;
   state: TotalStatesOutput[number]["state"];
   count: TotalStatesOutput[number]["count"];
+  index: number;
 }
 
-function StateInfoBox({ candidate, state, count }: StateInfoBoxProps) {
+function StateInfoBox({ candidate, state, count, index }: StateInfoBoxProps) {
   return (
     <li
       className={cn(
-        "flex items-center justify-between rounded-md border px-4 py-2 shadow-md shadow-zinc-300 dark:shadow-popover sm:block",
+        "flex items-center justify-between rounded-md border px-4 py-2 shadow-md shadow-zinc-300 animate-in fade-in duration-1000 fill-mode-forwards dark:shadow-popover sm:block",
         candidate === "Barbie" ? "bg-barbie" : "bg-oppenheimer"
       )}
+      style={{
+        // animationDelay: `${index * 50}ms`,
+        animationDuration: `${index * 100 + 100}ms`,
+      }}
     >
       <Link href={`/state/${state}`}>
         <h3 className="space-x-2 text-xl font-bold">
@@ -78,6 +83,7 @@ function VotesList() {
               }
               state={state.state}
               count={state.count}
+              index={index}
             />
           );
         })}

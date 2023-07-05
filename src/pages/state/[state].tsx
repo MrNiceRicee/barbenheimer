@@ -103,7 +103,9 @@ function Headliner({
 }) {
   return (
     <header className="flex flex-col items-center justify-center space-y-2">
-      <Link href="/">Go back</Link>
+      <Link href="/" className="underline">
+        Go back
+      </Link>
       <h2 className="text-2xl font-extrabold tracking-tight sm:text-[3rem]">
         {state}
       </h2>
@@ -198,7 +200,7 @@ function PeopleMessage({ message }: { message: StateInfo["data"][number] }) {
 
 function PeopleMessageList({ messages }: { messages: StateInfo["data"] }) {
   return (
-    <div className="mx-auto w-full sm:w-96 space-y-4 mt-6">
+    <div className="mx-auto mt-6 w-full space-y-4 sm:w-96">
       <h3 className="text-xl font-bold">{"Voter's"} Voices</h3>
       <ul className="space-y-4">
         {messages.map((message, index) => {

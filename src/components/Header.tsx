@@ -17,7 +17,7 @@ function VoteLine() {
       <div className="my-10 grid w-full grid-cols-12 sm:w-[66%]">
         <div className="col-span-6 flex h-10 flex-col items-start">
           <div
-            className="h-10 bg-oppenheimer"
+            className="h-10 origin-left animate-grow-x bg-oppenheimer duration-700"
             style={{
               width: `${oppenheimerPercentage}%`,
             }}
@@ -25,7 +25,7 @@ function VoteLine() {
         </div>
         <div className="col-span-6 flex h-10 flex-col items-end">
           <div
-            className="h-10 bg-barbie"
+            className="h-10 origin-right animate-grow-x bg-barbie duration-700"
             style={{
               width: `${barbiePercentage}%`,
             }}
@@ -59,7 +59,7 @@ export function Header() {
             <h1 className="text-2xl font-extrabold tracking-tight text-oppenheimer sm:text-[3rem]">
               Oppenheimer
             </h1>
-            <p className="text-center text-3xl font-bold text-oppenheimer sm:text-[3rem]">
+            <p className="text-center text-3xl font-bold text-oppenheimer animate-in slide-in-from-bottom-3 duration-300 delay-100 sm:text-[3rem]">
               {votes.Oppenheimer}
             </p>
           </div>
@@ -69,7 +69,7 @@ export function Header() {
             <h1 className="text-3xl font-extrabold tracking-tight text-barbie sm:text-[4rem]">
               Barbie
             </h1>
-            <p className="text-center text-3xl font-bold text-barbie sm:text-[3rem]">
+            <p className="text-center text-3xl font-bold text-barbie animate-in slide-in-from-bottom-3 duration-300 delay-100 sm:text-[3rem]">
               {votes.Barbie}
             </p>
           </div>
@@ -82,7 +82,7 @@ export function Header() {
             height={200}
           />
         </div>
-        <VoteLine />
+        <VoteLine key={`${votes.Barbie}-${votes.Oppenheimer}`} />
       </div>
     </header>
   );
