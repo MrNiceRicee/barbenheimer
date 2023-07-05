@@ -62,7 +62,9 @@ function VotesList() {
 
   return (
     <>
-      <p className="font-light text-sm mb-2">total votes {allVotes?.toLocaleString()}</p>
+      <p className="mb-2 text-sm font-light">
+        total votes {allVotes?.toLocaleString()}
+      </p>
       <StateSearch />
       <ul className="space-y-2">
         {filteredStates?.map((state, index) => {
@@ -178,6 +180,10 @@ export default function Home() {
         <meta
           name="description"
           content="Vote between the movies Barbie and Oppenheimer. Both are releasing on the same day"
+        />
+        <meta
+          property="og:image"
+          content="https://www.barbenheimer.com/api/og"
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
