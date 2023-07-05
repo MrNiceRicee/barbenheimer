@@ -4,38 +4,31 @@ import { publicProcedure } from "../../trpc";
 import { votes } from "~/connection/schema";
 
 export const winningStates = publicProcedure.query(async () => {
-  const voteCounts = db
+  const votePerCandidate = db
     .select({
       state: votes.state,
-      count: sql<number>`COUNT(*)`.as("count"),
-      candidate: votes.candidate,
+      barbieVotes: sql<number>`SUM(
+        CASE WHEN ${votes.candidate} = 'Barbie' THEN 1 ELSE 0 END
+      )`.as("innerBarbieVotes"),
+      oppenheimerVotes: sql<number>`SUM(
+        CASE WHEN ${votes.candidate} = 'Oppenheimer' THEN 1 ELSE 0 END
+      )`.as("innerOppenheimerVotes"),
     })
     .from(votes)
-    .groupBy(votes.state, votes.candidate)
-    .as("voteCounts");
-
-  const maxVotesPerState = db
-    .select({
-      state: voteCounts.state,
-      maxVotes: sql<number>`MAX(${voteCounts.count})`.as("maxVotes"),
-    })
-    .from(voteCounts)
-    .groupBy(voteCounts.state)
-    .as("maxVotesPerState");
+    .groupBy(votes.state)
+    .as("votePerCandidate");
 
   const totalVotes = await db
     .select({
-      state: voteCounts.state,
-      count: maxVotesPerState.maxVotes,
-      candidate: voteCounts.candidate,
+      state: votes.state,
+      totalVotes: sql<number>`COUNT(*)`,
+      barbieVotes: votePerCandidate.barbieVotes,
+      oppenheimerVotes: votePerCandidate.oppenheimerVotes,
+      winner: sql<'Barbie' | 'Oppenheimer' | 'Tie'>`CASE WHEN ${votePerCandidate.barbieVotes} > ${votePerCandidate.oppenheimerVotes} THEN 'Barbie' WHEN ${votePerCandidate.barbieVotes} < ${votePerCandidate.oppenheimerVotes} THEN 'Oppenheimer' ELSE 'Tie' END`,
     })
-    .from(voteCounts)
-    .innerJoin(
-      maxVotesPerState,
-      and(
-        eq(voteCounts.state, maxVotesPerState.state),
-        eq(voteCounts.count, maxVotesPerState.maxVotes)
-      )
-    );
+    .from(votes)
+    .innerJoin(votePerCandidate, and(eq(votes.state, votePerCandidate.state)))
+    .groupBy(votes.state);
+
   return totalVotes;
 });

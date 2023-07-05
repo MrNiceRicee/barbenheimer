@@ -54,6 +54,7 @@ module.exports = {
         },
         barbie: "hsl(329,99%,64%)",
         oppenheimer: "hsl(36,100%,50%)",
+        tie: "hsla(270deg, 10%, 80%, 1)",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -69,15 +70,15 @@ module.exports = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: 0 },
         },
-        'grow-x': {
-          '0%': { transform: 'scaleX(0)' },
-          '100%': { transform: 'scaleX(1)' },
+        "grow-x": {
+          "0%": { transform: "scaleX(0)" },
+          "100%": { transform: "scaleX(1)" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        'grow-x': 'grow-x 0.2s ease-out',
+        "grow-x": "grow-x 0.2s ease-out",
       },
     },
   },

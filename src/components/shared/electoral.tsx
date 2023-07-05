@@ -19,8 +19,12 @@ export function useWinningElectoralVotes() {
 
     return winningStates.data.reduce(
       (acc, state) => {
-        if (state.state) {
-          acc[state.candidate] += State_Map[state.state].value;
+        if (state.winner === "Barbie") {
+          acc.Barbie += State_Map[state.state].value;
+          return acc;
+        }
+        if (state.winner === "Oppenheimer") {
+          acc.Oppenheimer += State_Map[state.state].value;
         }
         return acc;
       },
