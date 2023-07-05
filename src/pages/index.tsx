@@ -25,18 +25,13 @@ function StateInfoBox({ candidate, state, count }: StateInfoBoxProps) {
   return (
     <li
       className={cn(
-        "flex items-center justify-between rounded-md border px-4 py-2 shadow-md shadow-zinc-300 dark:shadow-popover-foreground sm:block",
+        "flex items-center justify-between rounded-md border px-4 py-2 shadow-md shadow-zinc-300 dark:shadow-popover sm:block",
         candidate === "Barbie" ? "bg-barbie" : "bg-oppenheimer"
       )}
     >
-      <h3 className="text-xl font-bold">
-        {state}
-        <span className="ml-1 mr-2 text-sm font-thin lg:hidden">
-          ({State_Map[state].id})
-        </span>
-        <span className="hidden text-sm font-thin lg:inline">
-          ({State_Map[state].value})
-        </span>
+      <h3 className="space-x-2 text-xl font-bold">
+        <span>{state}</span>
+        <span className="text-sm font-light">({State_Map[state].value})</span>
       </h3>
       <p className="text-lg font-thin">
         {count} vote{count === 1 ? "" : "s"}
@@ -53,6 +48,10 @@ function VotesList() {
     retry: false,
   });
 
+  const allVotes = totalVotes.data?.reduce((acc, state) => {
+    return acc + Number(state.count);
+  }, 0);
+
   const { searchParams } = useStateParams();
 
   const filteredStates = totalVotes.data?.filter((state) => {
@@ -63,6 +62,9 @@ function VotesList() {
 
   return (
     <>
+      <p className="mb-2 text-sm font-light">
+        total votes {allVotes?.toLocaleString()}
+      </p>
       <StateSearch />
       <ul className="space-y-2">
         {filteredStates?.map((state, index) => {
@@ -178,6 +180,10 @@ export default function Home() {
         <meta
           name="description"
           content="Vote between the movies Barbie and Oppenheimer. Both are releasing on the same day"
+        />
+        <meta
+          property="og:image"
+          content="https://www.barbenheimer.com/api/og"
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
