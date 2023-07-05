@@ -25,16 +25,16 @@ export default async function handler() {
         }}
       >
         <img
-          width="700"
-          height="700"
+          width="600"
+          height="600"
           src={imageData as unknown as string}
           alt="Barbie and Oppenheimer election map"
         />
       </div>
     ),
     {
-      width: 700,
-      height: 700,
+      width: 600,
+      height: 600,
     }
   );
 }
