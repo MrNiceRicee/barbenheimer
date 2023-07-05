@@ -5,6 +5,7 @@ import {
 } from "~/server/api/routers/states/shared/colors";
 import { api } from "~/utils/api";
 import { useTheme } from "next-themes";
+import { useRouter } from "next/router";
 
 // value is electoral votes
 export const State_Map = {
@@ -249,13 +250,21 @@ function useThemeMode() {
 
 export default function USA() {
   const theme = useThemeMode();
+  const router = useRouter();
 
   const winningStates = api.states.winningStates.useQuery(undefined, {
     retry: false,
   });
 
   const onClick = (event: Event) => {
-    console.log(event.target.dataset.name);
+    // event target dataset name is just the Abbreviation, need to get the full name
+    const stateFullName = Object.keys(State_Map).find(
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      (key) =>
+        State_Map[key as keyof typeof State_Map].id ===
+        event.target.dataset.name
+    );
+    void router.push(`/state/${stateFullName ?? ""}`);
   };
 
   const stateCustomConfig = () => {
