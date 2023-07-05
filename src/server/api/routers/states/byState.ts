@@ -13,17 +13,30 @@ export const byState = publicProcedure
   .query(async ({ input }) => {
     const [stateVotes] = await db
       .select({
-        count: sql<number>`COUNT(*)`,
-        candidate: votes.candidate,
-        message: votes.message,
+        totalVotes: sql<number>`COUNT(*)`,
+        barbieVotes: sql<number>`SUM(
+          CASE WHEN ${votes.candidate} = 'Barbie' THEN 1 ELSE 0 END
+        )`,
+        oppenheimerVotes: sql<number>`SUM(
+          CASE WHEN ${votes.candidate} = 'Oppenheimer' THEN 1 ELSE 0 END
+        )`,
       })
       .from(votes)
       .where(eq(votes.state, input.state))
       .limit(1);
 
-    if (!stateVotes) {
-      return 0;
-    }
+    const stateData = await db
+      .select({
+        state: votes.state,
+        messages: votes.message,
+        candidate: votes.candidate,
+        votedAt: votes.votedAt,
+      })
+      .from(votes)
+      .where(eq(votes.state, input.state));
 
-    return stateVotes.count;
+    return {
+      votes: stateVotes,
+      data: stateData,
+    };
   });
