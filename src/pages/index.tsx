@@ -1,16 +1,15 @@
 import Head from "next/head";
 import USA from "~/components/map/usa";
-import Image from "next/image";
 import { BaseLayout } from "~/components/layouts/BaseLayout";
 import { api } from "~/utils/api";
 import { cn } from "~/lib/utils";
 import { type RouterOutputs } from "~/utils/api";
-import { useAtomValue } from "jotai";
-import { electoralAtom } from "~/components/shared/electoral";
 import { State_Map } from "~/components/map/usa";
 import { StateSearch } from "~/components/StateSearch";
 import { useStateParams } from "~/components/shared/useStateParams";
 import { StateVote } from "~/components/vote/StateVote";
+import Link from "next/link";
+import { Header } from "~/components/Header";
 
 type WinningStatesOutput = RouterOutputs["states"]["winningStates"];
 type TotalStatesOutput = RouterOutputs["states"]["totalVotes"];
@@ -19,23 +18,30 @@ interface StateInfoBoxProps {
   candidate: WinningStatesOutput[number]["candidate"] | null;
   state: TotalStatesOutput[number]["state"];
   count: TotalStatesOutput[number]["count"];
+  index: number;
 }
 
-function StateInfoBox({ candidate, state, count }: StateInfoBoxProps) {
+function StateInfoBox({ candidate, state, count, index }: StateInfoBoxProps) {
   return (
     <li
       className={cn(
-        "flex items-center justify-between rounded-md border px-4 py-2 shadow-md shadow-zinc-300 dark:shadow-popover sm:block",
+        "flex items-center justify-between rounded-md border px-4 py-2 shadow-md shadow-zinc-300 animate-in fade-in duration-1000 fill-mode-forwards dark:shadow-popover sm:block",
         candidate === "Barbie" ? "bg-barbie" : "bg-oppenheimer"
       )}
+      style={{
+        // animationDelay: `${index * 50}ms`,
+        animationDuration: `${index * 100 + 100}ms`,
+      }}
     >
-      <h3 className="space-x-2 text-xl font-bold">
-        <span>{state}</span>
-        <span className="text-sm font-light">({State_Map[state].value})</span>
-      </h3>
-      <p className="text-lg font-thin">
-        {count} vote{count === 1 ? "" : "s"}
-      </p>
+      <Link href={`/state/${state}`}>
+        <h3 className="space-x-2 text-xl font-bold">
+          <span>{state}</span>
+          <span className="text-sm font-light">({State_Map[state].value})</span>
+        </h3>
+        <p className="text-lg font-thin">
+          {count} vote{count === 1 ? "" : "s"}
+        </p>
+      </Link>
     </li>
   );
 }
@@ -77,98 +83,12 @@ function VotesList() {
               }
               state={state.state}
               count={state.count}
+              index={index}
             />
           );
         })}
       </ul>
     </>
-  );
-}
-
-function VoteLine() {
-  const midVotes = 270; // Winning condition
-
-  const electoralVotes = useAtomValue(electoralAtom);
-
-  const oppenheimerPercentage = Math.round(
-    (electoralVotes.Oppenheimer / midVotes) * 100
-  );
-
-  const barbiePercentage = Math.round((electoralVotes.Barbie / midVotes) * 100);
-
-  return (
-    <div className="relative col-span-12 flex items-center justify-center sm:-mt-24">
-      <div className="my-10 grid w-full grid-cols-12 sm:w-[66%]">
-        <div className="col-span-6 flex h-10 flex-col items-start">
-          <div
-            className="h-10 bg-oppenheimer"
-            style={{
-              width: `${oppenheimerPercentage}%`,
-            }}
-          />
-        </div>
-        <div className="col-span-6 flex h-10 flex-col items-end">
-          <div
-            className="h-10 bg-barbie"
-            style={{
-              width: `${barbiePercentage}%`,
-            }}
-          />
-        </div>
-        <div className="absolute left-1/2 top-1/2 col-span-12 h-4 w-[1px] -translate-x-1/2 -translate-y-1/2 bg-gray-400" />
-        <p className="absolute left-1/2 -translate-x-1/2 translate-y-full text-center">
-          {midVotes}
-        </p>
-      </div>
-    </div>
-  );
-}
-
-function Header() {
-  const votes = useAtomValue(electoralAtom);
-
-  return (
-    <header className="container mb-10 flex flex-col">
-      <div className="grid grid-cols-12">
-        <div className="col-span-6 flex justify-start sm:col-span-2">
-          <Image
-            src="/images/Oppenheimer.jpg"
-            alt="Oppenheimer"
-            width={200}
-            height={200}
-          />
-        </div>
-        <div className="col-span-6 ml-2 flex justify-start space-y-4 break-words sm:col-span-4 sm:ml-0">
-          <div className="space-y-8">
-            <h1 className="text-2xl font-extrabold tracking-tight text-oppenheimer sm:text-[3rem]">
-              Oppenheimer
-            </h1>
-            <p className="text-center text-3xl font-bold text-oppenheimer sm:text-[3rem]">
-              {votes.Oppenheimer}
-            </p>
-          </div>
-        </div>
-        <div className="col-span-6 ml-2 justify-end space-y-4 break-words sm:col-span-4 sm:ml-0 sm:flex">
-          <div className="space-y-8">
-            <h1 className="text-3xl font-extrabold tracking-tight text-barbie sm:text-[4rem]">
-              Barbie
-            </h1>
-            <p className="text-center text-3xl font-bold text-barbie sm:text-[3rem]">
-              {votes.Barbie}
-            </p>
-          </div>
-        </div>
-        <div className="col-span-6 row-start-2 flex justify-end sm:col-span-2 sm:row-start-auto">
-          <Image
-            src="/images/Barbie.jpg"
-            alt="Barbie"
-            width={200}
-            height={200}
-          />
-        </div>
-        <VoteLine />
-      </div>
-    </header>
   );
 }
 

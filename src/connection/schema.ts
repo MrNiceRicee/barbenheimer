@@ -2,6 +2,7 @@ import { type InferModel } from "drizzle-orm";
 import {
   mysqlTable,
   serial,
+  timestamp,
   uniqueIndex,
   varchar,
 } from "drizzle-orm/mysql-core";
@@ -86,6 +87,7 @@ export const votes = mysqlTable(
     message: varchar("message", {
       length: 280,
     }),
+    votedAt: timestamp("voted_at").defaultNow(),
   },
   (votesTable) => {
     return {

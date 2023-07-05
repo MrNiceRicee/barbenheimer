@@ -1,13 +1,11 @@
-import { useEffect } from "react";
-import { useSetAtom } from "jotai";
 import USAMap, { type Event, type MapCustomizations } from "react-usa-map";
 import {
   barbieColors,
   oppenheimerColors,
 } from "~/server/api/routers/states/shared/colors";
 import { api } from "~/utils/api";
-import { electoralAtom } from "../shared/electoral";
 import { useTheme } from "next-themes";
+import { useRouter } from "next/router";
 
 // value is electoral votes
 export const State_Map = {
@@ -252,14 +250,21 @@ function useThemeMode() {
 
 export default function USA() {
   const theme = useThemeMode();
-  const setElectoralVotes = useSetAtom(electoralAtom);
+  const router = useRouter();
 
   const winningStates = api.states.winningStates.useQuery(undefined, {
     retry: false,
   });
 
   const onClick = (event: Event) => {
-    console.log(event.target.dataset.name);
+    // event target dataset name is just the Abbreviation, need to get the full name
+    const stateFullName = Object.keys(State_Map).find(
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      (key) =>
+        State_Map[key as keyof typeof State_Map].id ===
+        event.target.dataset.name
+    );
+    void router.push(`/state/${stateFullName ?? ""}`);
   };
 
   const stateCustomConfig = () => {
@@ -278,22 +283,6 @@ export default function USA() {
 
     return {};
   };
-
-  useEffect(() => {
-    if (!winningStates.data) return;
-
-    const electoralVotes = winningStates.data.reduce(
-      (acc, state) => {
-        if (state.state) {
-          acc[state.candidate] += State_Map[state.state].value;
-        }
-        return acc;
-      },
-      { Barbie: 0, Oppenheimer: 0 }
-    );
-
-    setElectoralVotes(electoralVotes);
-  }, [setElectoralVotes, winningStates.data]);
 
   return (
     <div className="relative flex h-full w-full items-center justify-center">

@@ -54,6 +54,8 @@ export const stateList = [
   "Wyoming",
 ] as const;
 
+export type States = (typeof stateList)[number];
+
 const searchParamsSchema = z.object({
   state: z.enum(stateList).or(z.string()).nullish(),
 });
