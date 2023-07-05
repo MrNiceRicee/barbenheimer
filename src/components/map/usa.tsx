@@ -1,12 +1,9 @@
-import { useEffect } from "react";
-import { useSetAtom } from "jotai";
 import USAMap, { type Event, type MapCustomizations } from "react-usa-map";
 import {
   barbieColors,
   oppenheimerColors,
 } from "~/server/api/routers/states/shared/colors";
 import { api } from "~/utils/api";
-import { electoralAtom } from "../shared/electoral";
 import { useTheme } from "next-themes";
 
 // value is electoral votes
@@ -252,7 +249,6 @@ function useThemeMode() {
 
 export default function USA() {
   const theme = useThemeMode();
-  const setElectoralVotes = useSetAtom(electoralAtom);
 
   const winningStates = api.states.winningStates.useQuery(undefined, {
     retry: false,
@@ -278,22 +274,6 @@ export default function USA() {
 
     return {};
   };
-
-  useEffect(() => {
-    if (!winningStates.data) return;
-
-    const electoralVotes = winningStates.data.reduce(
-      (acc, state) => {
-        if (state.state) {
-          acc[state.candidate] += State_Map[state.state].value;
-        }
-        return acc;
-      },
-      { Barbie: 0, Oppenheimer: 0 }
-    );
-
-    setElectoralVotes(electoralVotes);
-  }, [setElectoralVotes, winningStates.data]);
 
   return (
     <div className="relative flex h-full w-full items-center justify-center">
