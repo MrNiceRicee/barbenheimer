@@ -1,5 +1,4 @@
-import { useAtomValue } from "jotai";
-import { electoralAtom, useWinningElectoralVotes } from "./shared/electoral";
+import { useWinningElectoralVotes } from "./shared/electoral";
 import Image from "next/image";
 
 function VoteLine() {
