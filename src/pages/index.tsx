@@ -25,7 +25,7 @@ function StateInfoBox({ candidate, state, count, index }: StateInfoBoxProps) {
   return (
     <li
       className={cn(
-        "flex items-center justify-between rounded-md border px-4 py-2 shadow-md shadow-zinc-300 animate-in fade-in duration-1000 fill-mode-forwards dark:shadow-popover sm:block",
+        "flex items-center justify-between rounded-md border px-4 py-2 shadow-md shadow-zinc-300 animate-in fade-in duration-1000 fill-mode-forwards dark:shadow-zinc-950 sm:block",
         candidate === "Barbie" ? "bg-barbie" : "bg-oppenheimer"
       )}
       style={{
@@ -72,7 +72,7 @@ function VotesList() {
         total votes {allVotes?.toLocaleString()}
       </p>
       <StateSearch />
-      <ul className="space-y-2">
+      <ul className="max-h-[30rem] space-y-2 overflow-y-scroll">
         {filteredStates?.map((state, index) => {
           return (
             <StateInfoBox
