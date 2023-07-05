@@ -26,8 +26,8 @@ import { Textarea } from "~/components/ui/textarea";
 import { Loader } from "lucide-react";
 
 const stateVoteSchema = z.object({
-  state: z.enum(stateList),
-  candidate: z.enum(["Barbie", "Oppenheimer"]),
+  state: z.enum(stateList).optional(),
+  candidate: z.enum(["Barbie", "Oppenheimer"]).optional(),
   message: z.string().max(280).optional(),
 });
 
@@ -38,6 +38,11 @@ export function StateVote() {
   const [loading, setLoading] = useState(vote.isLoading);
   const form = useForm<z.infer<typeof stateVoteSchema>>({
     resolver: zodResolver(stateVoteSchema),
+    defaultValues: {
+      state: undefined,
+      candidate: undefined,
+      message: "",
+    },
   });
 
   const onSubmit = async (values: z.infer<typeof stateVoteSchema>) => {
@@ -49,6 +54,19 @@ export function StateVote() {
     }
     setLoading(true);
     try {
+      if (!values.state) {
+        return form.setError("state", {
+          type: "manual",
+          message: "Please select a state",
+        });
+      }
+      if (!values.candidate) {
+        return form.setError("candidate", {
+          type: "manual",
+          message: "Please select a candidate",
+        });
+      }
+
       await Promise.all([
         vote.mutateAsync({
           state: values.state,
@@ -58,6 +76,7 @@ export function StateVote() {
         new Promise((resolve) => setTimeout(resolve, 1000)),
       ]);
       void apiContext.states.invalidate();
+      form.reset();
     } catch (error) {
       console.error(error);
       if (isTRPCClientError(error)) {
@@ -85,6 +104,7 @@ export function StateVote() {
                 <Select
                   onValueChange={field.onChange as (value: string) => void}
                   defaultValue={field.value}
+                  key={`${field.value ?? "default"}-state`}
                 >
                   <FormControl>
                     <SelectTrigger>
@@ -117,6 +137,7 @@ export function StateVote() {
                 <Select
                   onValueChange={field.onChange as (value: string) => void}
                   defaultValue={field.value}
+                  key={`${field.value ?? "default"}-candidate`}
                 >
                   <FormControl>
                     <SelectTrigger>
