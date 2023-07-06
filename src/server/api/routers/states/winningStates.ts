@@ -3,7 +3,8 @@ import { db } from "~/connection/db";
 import { publicProcedure } from "../../trpc";
 import { votes } from "~/connection/schema";
 
-export const winningStates = publicProcedure.query(async () => {
+export const winningStates = publicProcedure.query(async ({ ctx }) => {
+  ctx.log.info("Getting winning states");
   const votePerCandidate = db
     .select({
       state: votes.state,
@@ -24,7 +25,9 @@ export const winningStates = publicProcedure.query(async () => {
       totalVotes: sql<number>`COUNT(*)`,
       barbieVotes: votePerCandidate.barbieVotes,
       oppenheimerVotes: votePerCandidate.oppenheimerVotes,
-      winner: sql<'Barbie' | 'Oppenheimer' | 'Tie'>`CASE WHEN ${votePerCandidate.barbieVotes} > ${votePerCandidate.oppenheimerVotes} THEN 'Barbie' WHEN ${votePerCandidate.barbieVotes} < ${votePerCandidate.oppenheimerVotes} THEN 'Oppenheimer' ELSE 'Tie' END`,
+      winner: sql<
+        "Barbie" | "Oppenheimer" | "Tie"
+      >`CASE WHEN ${votePerCandidate.barbieVotes} > ${votePerCandidate.oppenheimerVotes} THEN 'Barbie' WHEN ${votePerCandidate.barbieVotes} < ${votePerCandidate.oppenheimerVotes} THEN 'Oppenheimer' ELSE 'Tie' END`,
     })
     .from(votes)
     .innerJoin(votePerCandidate, and(eq(votes.state, votePerCandidate.state)))
