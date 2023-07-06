@@ -63,9 +63,7 @@ export const createTRPCContext = (opts: CreateNextContextOptions) => {
     throw new Error("Expected AxiomAPIRequest");
   }
 
-  const log = req.log;
-
-  return createInnerTRPCContext({ req: opts.req, log });
+  return createInnerTRPCContext({ req, log: req.log });
 };
 
 /**
