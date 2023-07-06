@@ -10,7 +10,7 @@ export const byState = publicProcedure
       state: z.enum(USA_STATES_FULL),
     })
   )
-  .query(async ({ input }) => {
+  .query(async ({ input, ctx }) => {
     const [stateVotes] = await db
       .select({
         totalVotes: sql<number>`COUNT(*)`,
@@ -34,6 +34,8 @@ export const byState = publicProcedure
       })
       .from(votes)
       .where(eq(votes.state, input.state));
+
+    ctx.log.info(`Getting votes for ${input.state}`);
 
     return {
       votes: stateVotes,

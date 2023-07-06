@@ -4,7 +4,6 @@ import { publicProcedure } from "../../trpc";
 import { votes } from "~/connection/schema";
 
 export const winningStates = publicProcedure.query(async ({ ctx }) => {
-  ctx.log.info("Getting winning states");
   const votePerCandidate = db
     .select({
       state: votes.state,
@@ -33,5 +32,6 @@ export const winningStates = publicProcedure.query(async ({ ctx }) => {
     .innerJoin(votePerCandidate, and(eq(votes.state, votePerCandidate.state)))
     .groupBy(votes.state);
 
+  ctx.log.info("Getting winning states");
   return totalVotes;
 });
