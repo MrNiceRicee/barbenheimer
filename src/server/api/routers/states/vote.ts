@@ -16,6 +16,7 @@ export const vote = publicProcedure
   )
   .mutation(async ({ input, ctx }) => {
     const userIP = ctx.req.headers["x-forwarded-for"]?.toString();
+
     if (!userIP) {
       throw new TRPCError({
         code: "BAD_REQUEST",
@@ -45,7 +46,16 @@ export const vote = publicProcedure
         candidate: input.candidate,
         message: input.message,
       });
+
+      ctx.log.info("Vote added", {
+        candidate: input.candidate,
+        state: input.state,
+      });
     } catch (err) {
+      ctx.log.error("Failed to add vote", {
+        candidate: input.candidate,
+        state: input.state,
+      });
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
         message: "Failed to vote, please try again later.",

@@ -9,6 +9,8 @@
 
 import { initTRPC } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
+import { type NextApiRequest } from "next";
+import { type AxiomAPIRequest } from "next-axiom";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
@@ -22,6 +24,7 @@ import { ZodError } from "zod";
 
 type CreateContextOptions = {
   req: CreateNextContextOptions["req"];
+  log: AxiomAPIRequest["log"];
 };
 
 /**
@@ -37,7 +40,14 @@ type CreateContextOptions = {
 const createInnerTRPCContext = (_opts: CreateContextOptions) => {
   return {
     req: _opts.req,
+    log: _opts.log,
   };
+};
+
+const isAxiomAPIRequest = (
+  req?: NextApiRequest | AxiomAPIRequest
+): req is AxiomAPIRequest => {
+  return Boolean((req as AxiomAPIRequest)?.log);
 };
 
 /**
@@ -47,7 +57,13 @@ const createInnerTRPCContext = (_opts: CreateContextOptions) => {
  * @see https://trpc.io/docs/context
  */
 export const createTRPCContext = (opts: CreateNextContextOptions) => {
-  return createInnerTRPCContext({ req: opts.req });
+  const req = opts.req;
+
+  if (!isAxiomAPIRequest(req)) {
+    throw new Error("Expected AxiomAPIRequest");
+  }
+
+  return createInnerTRPCContext({ req, log: req.log });
 };
 
 /**

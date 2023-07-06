@@ -3,7 +3,7 @@ import {
   barbieColors,
   oppenheimerColors,
   tieColors,
-} from "~/server/api/routers/states/shared/colors";
+} from "~/utils/colors";
 import { api } from "~/utils/api";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/router";
