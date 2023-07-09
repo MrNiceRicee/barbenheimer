@@ -1,12 +1,13 @@
 import { useRouter } from "next/router";
+import Link from "next/link";
+import { CheckCircle } from "lucide-react";
 import { BaseLayout } from "~/components/layouts/BaseLayout";
 import { Header } from "~/components/Header";
 import { api } from "~/utils/api";
 import { type States } from "~/components/shared/useStateParams";
 import type { RouterOutputs } from "~/utils/api";
-import { CheckCircle } from "lucide-react";
 import { cn } from "~/lib/utils";
-import Link from "next/link";
+import { State_Map } from "~/components/map/usa";
 
 type StateInfo = RouterOutputs["states"]["byState"];
 
@@ -19,7 +20,7 @@ function Winner({
 }) {
   if (barbieVotes > oppenheimerVotes) {
     return (
-      <p className="text-xl font-bold text-barbie sm:text-3xl">
+      <p className="text-2xl font-bold text-barbie sm:text-3xl">
         Barbie
         <CheckCircle className="ml-2 inline-block text-barbie" />
       </p>
@@ -28,13 +29,13 @@ function Winner({
 
   if (oppenheimerVotes > barbieVotes) {
     return (
-      <p className="text-xl font-bold text-oppenheimer sm:text-3xl">
+      <p className="text-2xl font-bold text-oppenheimer sm:text-3xl">
         Oppenheimer
       </p>
     );
   }
 
-  return <p className="animate-pulse text-gray-500">Tie</p>;
+  return <p className="text-2xl text-zinc-600 dark:text-zinc-400">Tie</p>;
 }
 
 function calculatePercentage({
@@ -109,6 +110,7 @@ function Headliner({
       <h2 className="text-2xl font-extrabold tracking-tight sm:text-[3rem]">
         {state}
       </h2>
+      <p className="text-sm text-zinc-600 dark:text-zinc-400">{State_Map[state].value} points</p>
       <Winner
         barbieVotes={barbieVotes ?? 0}
         oppenheimerVotes={oppenheimerVotes ?? 0}
