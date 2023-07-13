@@ -28,10 +28,8 @@ function PeopleMessage({
           candidate === "Barbie" ? "border-barbie" : "border-oppenheimer"
         )}
       >
-        <h3 className="text-lg font-bold leading-tight">
-          {message.state} voter
-        </h3>
         <p className="text-sm text-gray-500">
+          <span className="mr-2">{message.state}</span>
           {new Date(message.votedAt ?? "").toLocaleString()}
         </p>
       </li>
@@ -45,7 +43,7 @@ function PeopleMessage({
         candidate === "Barbie" ? "border-barbie" : "border-oppenheimer"
       )}
     >
-      <h3 className="text-lg font-bold leading-tight">{message.state} voter</h3>
+      <h3 className="text-lg font-bold leading-tight">{message.state}</h3>
       <p className="break-words text-xl leading-tight">{message.messages}</p>
       <p className="text-sm text-gray-500">
         {new Date(message.votedAt ?? "").toLocaleString()}
