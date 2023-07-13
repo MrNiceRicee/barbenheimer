@@ -45,7 +45,8 @@ function calculatePercentage({
   value: number;
   total: number;
 }) {
-  if (total === 0) return "0%";
+  if (!total) return "0%";
+  if (!value) return "0%";
   return `${Math.round((value / total) * 100)}%`;
 }
 

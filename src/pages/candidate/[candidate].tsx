@@ -28,6 +28,9 @@ function PeopleMessage({
           candidate === "Barbie" ? "border-barbie" : "border-oppenheimer"
         )}
       >
+        <h3 className="text-lg font-bold leading-tight">
+          {message.state} voter
+        </h3>
         <p className="text-sm text-gray-500">
           {new Date(message.votedAt ?? "").toLocaleString()}
         </p>
@@ -42,7 +45,7 @@ function PeopleMessage({
         candidate === "Barbie" ? "border-barbie" : "border-oppenheimer"
       )}
     >
-      <h3 className="text-lg font-bold leading-tight">Voter says</h3>
+      <h3 className="text-lg font-bold leading-tight">{message.state} voter</h3>
       <p className="break-words text-xl leading-tight">{message.messages}</p>
       <p className="text-sm text-gray-500">
         {new Date(message.votedAt ?? "").toLocaleString()}
@@ -61,7 +64,7 @@ function PeopleMessageList({
   return (
     <div className="mx-auto mt-6 w-full space-y-4 sm:w-96">
       <h3 className="text-xl font-bold">{"Voter's"} Voices</h3>
-      <ul className="space-y-4">
+      <ul className="space-y-6">
         {messages.map((message, index) => {
           return (
             <PeopleMessage
