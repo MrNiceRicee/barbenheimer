@@ -30,6 +30,7 @@ export const winningStates = publicProcedure.query(async ({ ctx }) => {
     })
     .from(votes)
     .innerJoin(votePerCandidate, and(eq(votes.state, votePerCandidate.state)))
+    .orderBy(votes.state)
     .groupBy(votes.state);
 
   ctx.log.info("Getting winning states");

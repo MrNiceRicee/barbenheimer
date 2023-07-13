@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useWinningElectoralVotes } from "./shared/electoral";
 import Image from "next/image";
 
@@ -56,9 +57,11 @@ export function Header() {
         </div>
         <div className="col-span-6 ml-2 flex justify-start space-y-4 break-words sm:col-span-4 sm:ml-0">
           <div className="space-y-8">
-            <h1 className="text-2xl font-extrabold tracking-tight text-oppenheimer sm:text-[3rem]">
-              Oppenheimer
-            </h1>
+            <Link href="/candidate/oppenheimer">
+              <h1 className="text-2xl font-extrabold tracking-tight text-oppenheimer sm:text-[3rem]">
+                Oppenheimer
+              </h1>
+            </Link>
             <p className="text-center text-3xl font-bold text-oppenheimer animate-in slide-in-from-bottom-3 duration-300 delay-100 sm:text-[3rem]">
               {votes.Oppenheimer}
             </p>
@@ -66,9 +69,11 @@ export function Header() {
         </div>
         <div className="col-span-6 ml-2 justify-end space-y-4 break-words sm:col-span-4 sm:ml-0 sm:flex">
           <div className="space-y-8">
-            <h1 className="text-3xl font-extrabold tracking-tight text-barbie sm:text-[4rem]">
-              Barbie
-            </h1>
+            <Link href="/candidate/barbie">
+              <h1 className="text-3xl font-extrabold tracking-tight text-barbie sm:text-[4rem]">
+                Barbie
+              </h1>
+            </Link>
             <p className="text-center text-3xl font-bold text-barbie animate-in slide-in-from-bottom-3 duration-300 delay-100 sm:text-[3rem]">
               {votes.Barbie}
             </p>
