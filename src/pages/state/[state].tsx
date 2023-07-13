@@ -110,7 +110,9 @@ function Headliner({
       <h2 className="text-2xl font-extrabold tracking-tight sm:text-[3rem]">
         {state}
       </h2>
-      <p className="text-sm text-zinc-600 dark:text-zinc-400">{State_Map[state].value} points</p>
+      <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        {State_Map[state].value} points
+      </p>
       <Winner
         barbieVotes={barbieVotes ?? 0}
         oppenheimerVotes={oppenheimerVotes ?? 0}
