@@ -24,6 +24,10 @@ import { useEffect, useState } from "react";
 import { useToast } from "~/components/ui/use-toast";
 import { Textarea } from "~/components/ui/textarea";
 import { Loader } from "lucide-react";
+import { atomWithStorage } from "jotai/utils";
+import { useAtomValue } from "jotai";
+
+const alreadyVoted = atomWithStorage("alreadyVoted", false);
 
 const stateVoteSchema = z.object({
   state: z.enum(stateList).optional(),
@@ -33,6 +37,7 @@ const stateVoteSchema = z.object({
 
 export function StateVote() {
   const vote = api.states.vote.useMutation();
+  const isAlreadyVoted = useAtomValue(alreadyVoted);
   const apiContext = api.useContext();
   const { toast } = useToast();
   const [loading, setLoading] = useState(vote.isLoading);
@@ -61,6 +66,14 @@ export function StateVote() {
   }, [vote.isSuccess]);
 
   const onSubmit = async (values: z.infer<typeof stateVoteSchema>) => {
+    if (isAlreadyVoted) {
+      return toast({
+        title: "Error",
+        description: "You have already voted",
+        variant: "destructive",
+      });
+    }
+
     if (loading) {
       return toast({
         title: "Please wait",
