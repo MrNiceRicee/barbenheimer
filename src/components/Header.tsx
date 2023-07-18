@@ -1,15 +1,11 @@
 import Link from "next/link";
 import { useWinningElectoralVotes } from "./shared/electoral";
 import Image from "next/image";
-import { api } from "~/utils/api";
 
 function VoteLine() {
   const midVotes = 270; // Winning condition
 
   const electoralVotes = useWinningElectoralVotes();
-  const candidateVotes = api.candidates.voteCounts.useQuery(undefined, {
-    retry: false,
-  });
 
   const oppenheimerPercentage = Math.round(
     (electoralVotes.Oppenheimer / midVotes) * 100
@@ -26,11 +22,7 @@ function VoteLine() {
             style={{
               width: `${oppenheimerPercentage}%`,
             }}
-          >
-            <p className="text-sm font-light">
-              {candidateVotes.data?.oppenheimerVotes.toLocaleString() ?? 0}
-            </p>
-          </div>
+          />
         </div>
         <div className="col-span-6 flex h-10 flex-col items-end">
           <div
@@ -38,11 +30,7 @@ function VoteLine() {
             style={{
               width: `${barbiePercentage}%`,
             }}
-          >
-            <p className="text-sm font-light">
-              {candidateVotes.data?.barbieVotes.toLocaleString() ?? 0}
-            </p>
-          </div>
+          />
         </div>
         <div className="absolute left-1/2 top-1/2 col-span-12 h-10 w-[1px] -translate-x-1/2 -translate-y-1/2 bg-gray-400" />
         <p className="absolute left-1/2 top-1/2 -translate-x-1/2 translate-y-full text-center">
