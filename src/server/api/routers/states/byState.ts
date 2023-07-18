@@ -2,7 +2,7 @@ import { z } from "zod";
 import { USA_STATES_FULL, votes } from "~/connection/schema";
 import { publicProcedure } from "../../trpc";
 import { db } from "~/connection/db";
-import { eq, sql } from "drizzle-orm";
+import { desc, eq, sql } from "drizzle-orm";
 
 export const byState = publicProcedure
   .input(
@@ -33,7 +33,8 @@ export const byState = publicProcedure
         votedAt: votes.votedAt,
       })
       .from(votes)
-      .where(eq(votes.state, input.state));
+      .where(eq(votes.state, input.state))
+      .orderBy(desc(votes.votedAt));
 
     ctx.log.info(`Getting votes for ${input.state}`);
 

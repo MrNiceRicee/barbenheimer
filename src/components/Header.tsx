@@ -1,11 +1,15 @@
 import Link from "next/link";
 import { useWinningElectoralVotes } from "./shared/electoral";
 import Image from "next/image";
+import { api } from "~/utils/api";
 
 function VoteLine() {
   const midVotes = 270; // Winning condition
 
   const electoralVotes = useWinningElectoralVotes();
+  const candidateVotes = api.candidates.voteCounts.useQuery(undefined, {
+    retry: false,
+  });
 
   const oppenheimerPercentage = Math.round(
     (electoralVotes.Oppenheimer / midVotes) * 100
@@ -18,22 +22,30 @@ function VoteLine() {
       <div className="my-10 grid w-full grid-cols-12 sm:w-[66%]">
         <div className="col-span-6 flex h-10 flex-col items-start">
           <div
-            className="h-10 origin-left animate-grow-x bg-oppenheimer duration-700"
+            className="flex h-10 origin-left animate-grow-x items-center justify-end bg-oppenheimer px-2 duration-700"
             style={{
               width: `${oppenheimerPercentage}%`,
             }}
-          />
+          >
+            <p className="text-sm font-light">
+              {candidateVotes.data?.oppenheimerVotes.toLocaleString() ?? 0}
+            </p>
+          </div>
         </div>
         <div className="col-span-6 flex h-10 flex-col items-end">
           <div
-            className="h-10 origin-right animate-grow-x bg-barbie duration-700"
+            className="flex h-10 origin-right animate-grow-x items-center justify-start bg-barbie px-2 duration-700"
             style={{
               width: `${barbiePercentage}%`,
             }}
-          />
+          >
+            <p className="text-sm font-light">
+              {candidateVotes.data?.barbieVotes.toLocaleString() ?? 0}
+            </p>
+          </div>
         </div>
-        <div className="absolute left-1/2 top-1/2 col-span-12 h-4 w-[1px] -translate-x-1/2 -translate-y-1/2 bg-gray-400" />
-        <p className="absolute left-1/2 -translate-x-1/2 translate-y-full text-center">
+        <div className="absolute left-1/2 top-1/2 col-span-12 h-10 w-[1px] -translate-x-1/2 -translate-y-1/2 bg-gray-400" />
+        <p className="absolute left-1/2 top-1/2 -translate-x-1/2 translate-y-full text-center">
           {midVotes}
         </p>
       </div>
