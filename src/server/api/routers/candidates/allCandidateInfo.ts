@@ -2,7 +2,7 @@ import { z } from "zod";
 import { db } from "~/connection/db";
 import { publicProcedure } from "../../trpc";
 import { votes } from "~/connection/schema";
-import { eq, sql } from "drizzle-orm";
+import { desc, eq, sql } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 
 const candidateSchema = z.object({
@@ -41,7 +41,8 @@ export const allCandidateInfo = publicProcedure
         votedAt: votes.votedAt,
       })
       .from(votes)
-      .where(eq(votes.candidate, input.candidate));
+      .where(eq(votes.candidate, input.candidate))
+      .orderBy(desc(votes.votedAt));
 
     const [totalVotes, candidateData] = await Promise.allSettled([
       totalVotesQuery,

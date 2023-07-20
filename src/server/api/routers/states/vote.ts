@@ -6,6 +6,9 @@ import { TRPCError } from "@trpc/server";
 import { publicProcedure } from "~/server/api/trpc";
 import { USA_STATES_FULL } from "~/connection/schema";
 
+// the last day to vote will be end of day on July 21st, 2023
+const END_OF_VOTING_DATE = new Date("2023-07-21T23:59:59.999Z");
+
 export const vote = publicProcedure
   .input(
     z.object({
@@ -15,6 +18,14 @@ export const vote = publicProcedure
     })
   )
   .mutation(async ({ input, ctx }) => {
+    if (new Date() > END_OF_VOTING_DATE) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message:
+          "Voting has ended. Go watch one of the movies. Stop voting here 🤨",
+      });
+    }
+
     const userIP = ctx.req.headers["x-forwarded-for"]?.toString();
 
     if (!userIP) {
