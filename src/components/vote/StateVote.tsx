@@ -19,52 +19,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import { api, isTRPCClientError } from "~/utils/api";
+import { api } from "~/utils/api";
 import { useEffect, useState } from "react";
 import { useToast } from "~/components/ui/use-toast";
 import { Textarea } from "~/components/ui/textarea";
 import { Loader } from "lucide-react";
-import { atomWithStorage } from "jotai/utils";
-import { useAtomValue } from "jotai";
+// import { atomWithStorage } from "jotai/utils";
+// import { useAtomValue } from "jotai";
 
-const alreadyVoted = atomWithStorage("alreadyVoted", false);
-
-function CountDown() {
-  const END_OF_VOTING_DATE = new Date("2023-07-22T09:00:00.000Z").getTime();
-  const [time, setTime] = useState(
-    Math.abs(END_OF_VOTING_DATE - new Date().getTime())
-  );
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTime(Math.abs(END_OF_VOTING_DATE - new Date().getTime()));
-    }, 1000);
-    return () => {
-      clearInterval(interval);
-    };
-  }, [END_OF_VOTING_DATE]);
-
-  const days = Math.floor(time / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((time / (1000 * 60 * 60)) % 24);
-  const minutes = Math.floor((time / (1000 * 60)) % 60);
-  const seconds = Math.floor((time / 1000) % 60);
-
-  return (
-    <div className="flex items-center justify-center space-x-0">
-      <span className="text-3xl font-bold tracking-tight">
-        {days.toString().padStart(2, "0")}:
-      </span>
-      <span className="text-3xl font-bold tracking-tight">
-        {hours.toString().padStart(2, "0")}:
-      </span>
-      <span className="text-3xl font-bold tracking-tight">
-        {minutes.toString().padStart(2, "0")}:
-      </span>
-      <span className="text-3xl font-bold tracking-tight">
-        {seconds.toString().padStart(2, "0")}
-      </span>
-    </div>
-  );
-}
+// const alreadyVoted = atomWithStorage("alreadyVoted", false);
 
 const stateVoteSchema = z.object({
   state: z.enum(stateList).optional(),
@@ -74,10 +37,10 @@ const stateVoteSchema = z.object({
 
 export function StateVote() {
   const vote = api.states.vote.useMutation();
-  const isAlreadyVoted = useAtomValue(alreadyVoted);
-  const apiContext = api.useContext();
+  // const isAlreadyVoted = useAtomValue(alreadyVoted);
+  // const apiContext = api.useContext();
   const { toast } = useToast();
-  const [loading, setLoading] = useState(vote.isLoading);
+  const [loading] = useState(vote.isLoading);
   const [success, setSuccess] = useState(false);
   const form = useForm<z.infer<typeof stateVoteSchema>>({
     resolver: zodResolver(stateVoteSchema),
@@ -102,63 +65,70 @@ export function StateVote() {
     }
   }, [vote.isSuccess]);
 
-  const onSubmit = async (values: z.infer<typeof stateVoteSchema>) => {
-    if (isAlreadyVoted) {
-      return toast({
-        title: "Error",
-        description: "You have already voted",
-        variant: "destructive",
-      });
-    }
+  const onSubmit = () => {
+    return toast({
+      title: "Error",
+      description:
+        "Voting has ended. Go watch one of the movies. Stop voting here 🤨",
+      variant: "destructive",
+    });
+    // old code below, when voting was still possible
+    // if (isAlreadyVoted) {
+    //   return toast({
+    //     title: "Error",
+    //     description: "You have already voted",
+    //     variant: "destructive",
+    //   });
+    // }
 
-    if (loading) {
-      return toast({
-        title: "Please wait",
-        description: "The vote is still being processed",
-      });
-    }
-    setLoading(true);
-    try {
-      if (!values.state) {
-        return form.setError("state", {
-          type: "manual",
-          message: "Please select a state",
-        });
-      }
-      if (!values.candidate) {
-        return form.setError("candidate", {
-          type: "manual",
-          message: "Please select a candidate",
-        });
-      }
+    // if (loading) {
+    //   return toast({
+    //     title: "Please wait",
+    //     description: "The vote is still being processed",
+    //   });
+    // }
+    // setLoading(true);
+    // try {
+    //   if (!values.state) {
+    //     return form.setError("state", {
+    //       type: "manual",
+    //       message: "Please select a state",
+    //     });
+    //   }
+    //   if (!values.candidate) {
+    //     return form.setError("candidate", {
+    //       type: "manual",
+    //       message: "Please select a candidate",
+    //     });
+    //   }
 
-      await Promise.all([
-        vote.mutateAsync({
-          state: values.state,
-          candidate: values.candidate,
-          message: values.message,
-          userTime: new Date().toISOString(),
-        }),
-        new Promise((resolve) => setTimeout(resolve, 1000)),
-      ]);
-      void apiContext.states.invalidate();
-      form.reset();
-      toast({
-        title: "Success",
-        description: "Your vote has been submitted",
-      });
-    } catch (error) {
-      console.error(error);
-      if (isTRPCClientError(error)) {
-        toast({
-          title: "Error",
-          description: error.message,
-          variant: "destructive",
-        });
-      }
-    } finally {
-      setLoading(false);
-    }
+    //   await Promise.all([
+    //     vote.mutateAsync({
+    //       state: values.state,
+    //       candidate: values.candidate,
+    //       message: values.message,
+    //       // userTime: new Date().toISOString(),
+    //     }),
+    //     new Promise((resolve) => setTimeout(resolve, 1000)),
+    //   ]);
+    //   void apiContext.states.invalidate();
+    //   form.reset();
+    //   toast({
+    //     title: "Success",
+    //     description: "Your vote has been submitted",
+    //   });
+    // } catch (error) {
+    //   console.error(error);
+    //   if (isTRPCClientError(error)) {
+    //     toast({
+    //       title: "Error",
+    //       description: error.message,
+    //       variant: "destructive",
+    //     });
+    //   }
+    // } finally {
+    //   setLoading(false);
+    // }
   };
 
   return (
@@ -262,9 +232,10 @@ export function StateVote() {
           </form>
         </Form>
       </section>
-      <div className="flex flex-col items-center justify-center space-y-2">
-        <h2 className="text-3xl font-bold tracking-tight">Time left</h2>
-        <CountDown />
+      <div>
+        <h2 className="text-center text-2xl font-bold">
+          Voting has ended. Go watch the movies!
+        </h2>
       </div>
     </>
   );
