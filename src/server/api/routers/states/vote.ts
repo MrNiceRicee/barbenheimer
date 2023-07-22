@@ -7,7 +7,7 @@ import { publicProcedure } from "~/server/api/trpc";
 import { USA_STATES_FULL } from "~/connection/schema";
 
 // the last day to vote will be end of day on July 21st, 2023
-const END_OF_VOTING_DATE = new Date("2023-07-21T23:59:59.999Z");
+const END_OF_VOTING_DATE = new Date("2023-07-22T09:00:00.000Z").getTime();
 
 export const vote = publicProcedure
   .input(
@@ -15,10 +15,16 @@ export const vote = publicProcedure
       state: z.enum(USA_STATES_FULL),
       candidate: z.enum(["Barbie", "Oppenheimer"]),
       message: z.string().max(280).optional(),
+      userTime: z.string(),
     })
   )
   .mutation(async ({ input, ctx }) => {
-    if (new Date() > END_OF_VOTING_DATE) {
+    const comparisonDate = input.userTime
+      ? new Date(input.userTime).getTime()
+      : new Date().getTime();
+
+    console.log(comparisonDate, END_OF_VOTING_DATE);
+    if (comparisonDate > END_OF_VOTING_DATE) {
       throw new TRPCError({
         code: "BAD_REQUEST",
         message:

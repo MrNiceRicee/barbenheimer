@@ -100,6 +100,7 @@ export function StateVote() {
           state: values.state,
           candidate: values.candidate,
           message: values.message,
+          userTime: new Date().toISOString(),
         }),
         new Promise((resolve) => setTimeout(resolve, 1000)),
       ]);
