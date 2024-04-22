@@ -1,11 +1,11 @@
-import { type InferModel } from "drizzle-orm";
+import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
 import {
-  mysqlTable,
+  pgTable,
   serial,
   timestamp,
   uniqueIndex,
   varchar,
-} from "drizzle-orm/mysql-core";
+} from "drizzle-orm/pg-core";
 
 export const USA_STATES_FULL = [
   "Alabama",
@@ -69,7 +69,7 @@ export const USA_STATES_FULL = [
   "Wyoming",
 ] as const;
 
-export const votes = mysqlTable(
+export const votes = pgTable(
   "barbenheimer_votes",
   {
     id: serial("id").primaryKey(),
@@ -96,4 +96,6 @@ export const votes = mysqlTable(
   }
 );
 
-export type Votes = InferModel<typeof votes>;
+// export type Votes = InferModel<typeof votes>;
+export type SelectVotes = InferSelectModel<typeof votes>;
+export type InsertVotes = InferInsertModel<typeof votes>;
