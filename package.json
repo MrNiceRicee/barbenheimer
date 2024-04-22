@@ -6,7 +6,7 @@
     "build": "next build",
     "clean": "rm -rf .next && rm -rf node_modules",
     "dev": "next dev",
-    "lint": "next lint",
+    "lint": "biome lint ./src",
     "start": "next start",
     "db:push": "drizzle-kit push:pg",
     "db:studio": "drizzle-kit studio"

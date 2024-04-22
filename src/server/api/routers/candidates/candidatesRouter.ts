@@ -3,6 +3,6 @@ import { allCandidateInfo } from "./allCandidateInfo";
 import { totalCandidateVotes } from "./totalCandidateVotes";
 
 export const candidatesRouter = createTRPCRouter({
-  allInfo: allCandidateInfo,
-  voteCounts: totalCandidateVotes,
+	allInfo: allCandidateInfo,
+	voteCounts: totalCandidateVotes,
 });

@@ -8,9 +8,9 @@
  */
 
 import { initTRPC } from "@trpc/server";
-import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
-import { type NextApiRequest } from "next";
-import { type AxiomAPIRequest } from "next-axiom";
+import type { CreateNextContextOptions } from "@trpc/server/adapters/next";
+import type { NextApiRequest } from "next";
+import type { AxiomAPIRequest } from "next-axiom";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
@@ -23,8 +23,8 @@ import { ZodError } from "zod";
  */
 
 type CreateContextOptions = {
-  req: CreateNextContextOptions["req"];
-  log: AxiomAPIRequest["log"];
+	req: CreateNextContextOptions["req"];
+	log: AxiomAPIRequest["log"];
 };
 
 /**
@@ -38,16 +38,16 @@ type CreateContextOptions = {
  * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
  */
 const createInnerTRPCContext = (_opts: CreateContextOptions) => {
-  return {
-    req: _opts.req,
-    log: _opts.log,
-  };
+	return {
+		req: _opts.req,
+		log: _opts.log,
+	};
 };
 
 const isAxiomAPIRequest = (
-  req?: NextApiRequest | AxiomAPIRequest
+	req?: NextApiRequest | AxiomAPIRequest,
 ): req is AxiomAPIRequest => {
-  return Boolean((req as AxiomAPIRequest)?.log);
+	return Boolean((req as AxiomAPIRequest)?.log);
 };
 
 /**
@@ -57,13 +57,13 @@ const isAxiomAPIRequest = (
  * @see https://trpc.io/docs/context
  */
 export const createTRPCContext = (opts: CreateNextContextOptions) => {
-  const req = opts.req;
+	const req = opts.req;
 
-  if (!isAxiomAPIRequest(req)) {
-    throw new Error("Expected AxiomAPIRequest");
-  }
+	if (!isAxiomAPIRequest(req)) {
+		throw new Error("Expected AxiomAPIRequest");
+	}
 
-  return createInnerTRPCContext({ req, log: req.log });
+	return createInnerTRPCContext({ req, log: req.log });
 };
 
 /**
@@ -75,17 +75,17 @@ export const createTRPCContext = (opts: CreateNextContextOptions) => {
  */
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
-  transformer: superjson,
-  errorFormatter({ shape, error }) {
-    return {
-      ...shape,
-      data: {
-        ...shape.data,
-        zodError:
-          error.cause instanceof ZodError ? error.cause.flatten() : null,
-      },
-    };
-  },
+	transformer: superjson,
+	errorFormatter({ shape, error }) {
+		return {
+			...shape,
+			data: {
+				...shape.data,
+				zodError:
+					error.cause instanceof ZodError ? error.cause.flatten() : null,
+			},
+		};
+	},
 });
 
 /**

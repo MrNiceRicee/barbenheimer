@@ -9,9 +9,9 @@ import { candidatesRouter } from "./routers/candidates/candidatesRouter";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  ip: ipRouter,
-  states: statesRouter,
-  candidates: candidatesRouter,
+	ip: ipRouter,
+	states: statesRouter,
+	candidates: candidatesRouter,
 });
 
 // export type definition of API
