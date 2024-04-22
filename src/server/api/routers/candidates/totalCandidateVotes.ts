@@ -1,7 +1,7 @@
-import { db } from "~/connection/db";
-import { publicProcedure } from "../../trpc";
-import { votes } from "~/connection/schema";
 import { sql } from "drizzle-orm";
+import { db } from "~/connection/db";
+import { votes } from "~/connection/schema";
+import { publicProcedure } from "../../trpc";
 
 export const totalCandidateVotes = publicProcedure.query(async ({ ctx }) => {
   const [totalVotes] = await db
@@ -17,7 +17,7 @@ export const totalCandidateVotes = publicProcedure.query(async ({ ctx }) => {
     .from(votes)
     .limit(1);
 
-  ctx.log.info(`Getting total votes`);
+  ctx.log.info("Getting total candidate votes");
 
   return totalVotes;
 });
