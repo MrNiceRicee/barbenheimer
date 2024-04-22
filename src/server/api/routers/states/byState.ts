@@ -1,8 +1,8 @@
+import { desc, eq, sql } from "drizzle-orm";
 import { z } from "zod";
+import { db } from "~/connection/db";
 import { USA_STATES_FULL, votes } from "~/connection/schema";
 import { publicProcedure } from "../../trpc";
-import { db } from "~/connection/db";
-import { desc, eq, sql } from "drizzle-orm";
 
 export const byState = publicProcedure
 	.input(

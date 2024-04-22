@@ -1,6 +1,6 @@
 import { createTRPCRouter } from "../../trpc";
-import { totalVotes } from "./totalVotes";
 import { byState } from "./byState";
+import { totalVotes } from "./totalVotes";
 import { vote } from "./vote";
 import { winningStates } from "./winningStates";
 

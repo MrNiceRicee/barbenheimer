@@ -1,7 +1,7 @@
-import Link from "next/link";
-import { useWinningElectoralVotes } from "./shared/electoral";
 import Image from "next/image";
+import Link from "next/link";
 import { api } from "~/utils/api";
+import { useWinningElectoralVotes } from "./shared/electoral";
 
 function VoteLine() {
 	const midVotes = 270; // Winning condition

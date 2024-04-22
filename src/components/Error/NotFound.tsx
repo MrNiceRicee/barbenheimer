@@ -1,7 +1,7 @@
 import { MapPin } from "lucide-react";
 import Link from "next/link";
-import { Button } from "../ui/Button";
 import { BaseLayout } from "../layouts/BaseLayout";
+import { Button } from "../ui/Button";
 
 export function NotFound({ message = "Page not found" }) {
 	return (

@@ -1,10 +1,10 @@
-import { z } from "zod";
 // import { eq } from "drizzle-orm";
 // import { db } from "~/connection/db";
 // import { votes } from "~/connection/schema";
 import { TRPCError } from "@trpc/server";
-import { publicProcedure } from "~/server/api/trpc";
+import { z } from "zod";
 import { USA_STATES_FULL } from "~/connection/schema";
+import { publicProcedure } from "~/server/api/trpc";
 
 // the last day to vote will be end of day on July 21st, 2023
 // const END_OF_VOTING_DATE = new Date("2023-07-22T09:00:00.000Z").getTime();

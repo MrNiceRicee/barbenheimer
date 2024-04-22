@@ -1,7 +1,5 @@
-import { Check, Eraser, ChevronDown } from "lucide-react";
+import { Check, ChevronDown, Eraser } from "lucide-react";
 import { useState } from "react";
-import { State_Map } from "./map/usa";
-import { stateList } from "./shared/useStateParams";
 import { Button } from "~/components/ui/Button";
 import {
 	Command,
@@ -16,6 +14,8 @@ import {
 	PopoverTrigger,
 } from "~/components/ui/popover";
 import { cn } from "~/lib/utils";
+import { State_Map } from "./map/usa";
+import { stateList } from "./shared/useStateParams";
 import { useStateParams } from "./shared/useStateParams";
 
 const StateList = () => {

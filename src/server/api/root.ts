@@ -1,7 +1,7 @@
 import { createTRPCRouter } from "~/server/api/trpc";
+import { candidatesRouter } from "./routers/candidates/candidatesRouter";
 import { ipRouter } from "./routers/ip";
 import { statesRouter } from "./routers/states/statesRouter";
-import { candidatesRouter } from "./routers/candidates/candidatesRouter";
 
 /**
  * This is the primary router for your server.

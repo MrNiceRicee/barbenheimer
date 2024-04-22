@@ -1,9 +1,9 @@
+import { TRPCError } from "@trpc/server";
+import { desc, eq, sql } from "drizzle-orm";
 import { z } from "zod";
 import { db } from "~/connection/db";
-import { publicProcedure } from "../../trpc";
 import { votes } from "~/connection/schema";
-import { desc, eq, sql } from "drizzle-orm";
-import { TRPCError } from "@trpc/server";
+import { publicProcedure } from "../../trpc";
 
 const candidateSchema = z.object({
 	candidate: z

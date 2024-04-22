@@ -1,8 +1,8 @@
-import USAMap, { type Event, type MapCustomizations } from "react-usa-map";
-import { barbieColors, oppenheimerColors, tieColors } from "~/utils/colors";
-import { api } from "~/utils/api";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/router";
+import USAMap, { type Event, type MapCustomizations } from "react-usa-map";
+import { api } from "~/utils/api";
+import { barbieColors, oppenheimerColors, tieColors } from "~/utils/colors";
 
 // value is electoral votes
 export const State_Map = {
